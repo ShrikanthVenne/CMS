@@ -41,18 +41,31 @@
 	    <c:if test="${messages != null}">
 	    	<div class="error" >
 		    	<h4>Error in Uploading</h4>
-			    <ul>
-				 	<c:forEach items="${messages}" var="message">	 		
-				 		<li>${message.key}</li>
-				 		<ul>
-					 		<c:forEach items="${message.value}" var="errorMsg">
-					 			<li>${errorMsg}</li>
-					 		</c:forEach>
-					 	</ul>
-				 	</c:forEach>
-			 	</ul>
-		 	</div>
-	 	</c:if>
+		    </div>
+		    <br/><br/>
+		    <table class="table table-bordered">
+		    	<thead>
+		    		<tr>
+		    			<th>Content Name</th>
+		    			<th>Errors</th>
+		    		</tr>
+		    	</thead>
+		    	<tbody>
+		    		<c:forEach items="${messages}" var="message">
+		    			<tr>
+		    				<td>${message.key}</td>
+		    				<td>
+		    					<ul>
+							 		<c:forEach items="${message.value}" var="errorMsg">
+							 			<li>${errorMsg}</li>
+							 		</c:forEach>
+							 	</ul>
+		    				</td>
+		    			</tr>
+		    		</c:forEach>
+		    	</tbody>
+		    </table>				 	
+	 	</c:if>	    	   
 	 	
 	 	<c:if test="${contentList != null}">
 	 		<div class="success">
