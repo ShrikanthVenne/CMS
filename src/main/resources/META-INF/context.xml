@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<Context>
+	    <ResourceLink 
+	    name="jdbc/PortalDB" 
+	    global="jdbc/PortalDB" 
+	    type = "javax.sql.DataSource" />
+	</Context>
