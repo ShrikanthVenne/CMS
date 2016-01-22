@@ -27,6 +27,9 @@ public class ContentService {
 	DataSource dataSource;
 	
 	
+	@Resource(name="appProperties")
+	Properties properties;
+	
 	
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
@@ -83,9 +86,10 @@ public class ContentService {
 	}
 	
 	public Integer getMaxContentId(){
+		String contentTable = properties.getProperty("contentTable");
 		Integer id = 0;
 		LOGGER.setLevel(Level.INFO);
-		String query = "Select max(content_id) from ATOM_CONTENT_TEST";
+		String query = "Select max(content_id) from "+contentTable;
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -123,8 +127,9 @@ public class ContentService {
 	
 	
 	public ArrayList<ContentBO> getCurrentlyUpdatedContent(Integer maxId, Integer count){
+		String contentTable = properties.getProperty("contentTable");
 		String query = "select top "+count+" content_id, content_name, b.category_name "
-				+ " from ATOM_CONTENT_TEST a "
+				+ " from "+contentTable+" a "
 				+ " inner join ATOM_CATEGORY b"
 				+ " on a. CATEGORY_ID = B.CATEGORY_ID"
 				+ " where content_id > "+maxId;
