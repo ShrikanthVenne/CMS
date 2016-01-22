@@ -38,6 +38,9 @@ public class ExcelImportController {
 		 	System.out.println("filee..");
 		 	System.out.println(fileBO.getFile());
 		 	String fileName = fileBO.getFile().getOriginalFilename();
+		 	System.out.println("APP: "+fileBO.isApp());
+		 	System.out.println("WAP: "+fileBO.isWap());
+		 	
 		 	//System.out.println();
 		 	if(fileName.endsWith(".xls") || fileName.endsWith(".xlsx")){
 		 		UploadBO uploadBO = importService.importData(fileBO);

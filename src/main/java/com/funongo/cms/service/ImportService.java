@@ -11,9 +11,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
@@ -46,11 +48,18 @@ public class ImportService {
 	@Autowired
 	DataSource dataSource;
 	
+	@Resource(name="appProperties")
+	Properties properties;
+	
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
 	public UploadBO importData(FileBO fileBO){
 		
 		UploadBO uploadBO = new UploadBO();
+		
+		String app = fileBO.isApp() ? "1" : "0";
+		
+	 	String wap = fileBO.isWap() ? "1" : "0";
 		
 		HashMap<String, HashSet<Integer>> ids = contentService.getAllCategoryIds();
 		
@@ -113,10 +122,12 @@ public class ImportService {
 			      
 			      mapArray.add(rowMap);
 			      columns.add("'C'");
-			      columns.add("1");
+			      columns.add(app);
+			      columns.add(wap);
 			      columns.add("'admin'");
 			      columns.add("getDate()");
-			      columns.add("'UPLOADED'");
+			      columns.add("'APPROVED'");
+			      columns.add("getDate()");
 			      
 			      // validate the content
 			      errors.putAll(excelValidatorService.validateContent(rowMap, categories, subCategories, genres, tps));
@@ -130,9 +141,11 @@ public class ImportService {
 			   
 			   colNames.add("PACK_CONTENT");
 			   colNames.add("IsAPP");
+			   colNames.add("IsWAP");
 			   colNames.add("UPLOADED_BY");
 			   colNames.add("UPLOADED_DATE");
 			   colNames.add("STATUS");
+			   colNames.add("APPROVED_DATE");
 			   
 			   // Comma separated column names
 			   String colNameString = StringUtils.collectionToDelimitedString(colNames,",","[","]");
@@ -142,10 +155,10 @@ public class ImportService {
 			   
 			   if(errors.size() == 0){
 				   Integer maxContentId = contentService.getMaxContentId();				   				   
-				   
-				   String query = "Insert into ATOM_CONTENT_TEST "+colNameString
+				   String tableName = properties.getProperty("contentTable");
+				   String query = "Insert into "+tableName+" "+colNameString
 						   +" values "+StringUtils.collectionToCommaDelimitedString(rowValues);
-				   System.out.println(query);
+				   //System.out.println(query);
 				   
 				   Connection con = null;
 				   PreparedStatement ps = null;
@@ -161,6 +174,9 @@ public class ImportService {
 					LOGGER.info("rows manipulated: "+rows);
 				}
 				catch(Exception e){
+					ArrayList< String> exceptionList = new ArrayList<String>();
+					exceptionList.add(e.getMessage());
+					errors.put("General", exceptionList);
 					LOGGER.info(e.getMessage());
 				}
 				finally{
@@ -174,9 +190,108 @@ public class ImportService {
 						}
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
+						ArrayList< String> exceptionList = new ArrayList<String>();
+						exceptionList.add(e.getMessage());
+						errors.put("General", exceptionList);
 						LOGGER.setLevel(Level.INFO);
 					    LOGGER.info(e.getMessage());				
 					}
+				}
+				
+				if(errors.size() == 0){
+					String contentTable = properties.getProperty("contentTable");
+					String approvedTable = properties.getProperty("approvedTable");
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					String currentDate = sdf.format(new Date());
+					
+					String approveQuery = "Insert into "+approvedTable
+							+"([CONTENT_ID], [CONTENT_NAME], [DISPLAY_NAME], [TP_ID], [CATEGORY_ID], [SUBCATEGORY_ID], [WRAPPING_PARTNER], [COST],"
+							+" [GENRE_ID], [SUB_GENRE], [LANGUAGE], [RATING], [SEARCH], [SHORT_DESCRIPTION], [LONG_DESCRIPTION], [CONTENT_TYPE], "
+							+" [STATUS], [ALBUM_ID], [MOVIE_ID], [OS_ID], [FILE_SIZE], [CONTENT_PRODUCTION_DATE], [AGE_GROUP], [UPLOADED_BY], "
+							+" [UPLOADED_DATE], [VALIDFROM], [VALIDTO], [APPROVED_DATE], [IMAGE_PREVIEW], [AUDIO_PREVIEW], [VIDEO_PREVIEW], "
+							+" [PREVIEW_FILE_NAME], [CONTENT_VERSION], [SMARTURL1], [SMARTURL2], [DIRECTORS], [PRODUCERS], [MUSIC_DIRECTORS], "
+							+" [ACTORS], [ACTRESSES], [SINGERS], [CHOREOGRAPHER], [SUPPORTING_STAR_CAST], [LYRICIST], [REVIEW], [RELEASEDATE], "
+							+" [PRODUCTION_COMPANIES], [IMAGE_PREVIEW1], [IMAGE_PREVIEW2], [IMAGE_PREVIEW3], [IMAGE_PREVIEW4], [IMAGE_PREVIEW5], "
+							+" [POSTERURL1], [POSTERURL2], [POSTERURL3], [POSTERURL4], [POSTERURL5], [POSTERURL6], [DURATION], [GRADE], [C_LANG], "
+							+" [PACK_CONTENT], [FILESIZE480], [FILESIZE300], [FILESIZE240])"
+                            +" select [CONTENT_ID], [CONTENT_NAME], [DISPLAY_NAME], [TP_ID], [CATEGORY_ID], [SUBCATEGORY_ID], [WRAPPING_PARTNER], "
+							+" [COST], [GENRE_ID], [SUB_GENRE], [LANGUAGE], [RATING], [SEARCH], [SHORT_DESCRIPTION], [LONG_DESCRIPTION], "
+                            +" [CONTENT_TYPE], [STATUS], [ALBUM_ID], [MOVIE_ID], [OS_ID], [FILE_SIZE], [CONTENT_PRODUCTION_DATE], [AGE_GROUP], "
+							+" [UPLOADED_BY], [UPLOADED_DATE], [VALIDFROM], [VALIDTO], [APPROVED_DATE], [IMAGE_PREVIEW], [AUDIO_PREVIEW], "
+                            +" [VIDEO_PREVIEW], [PREVIEW_FILE_NAME], [CONTENT_VERSION], [SMARTURL1], [SMARTURL2], [DIRECTORS], [PRODUCERS], "
+							+" [MUSIC_DIRECTORS], [ACTORS], [ACTRESSES], [SINGERS], [CHOREOGRAPHER], [SUPPORTING_STAR_CAST], [LYRICIST], [REVIEW], "
+                            +" [RELEASEDATE], [PRODUCTION_COMPANIES], [IMAGE_PREVIEW1], [IMAGE_PREVIEW2], [IMAGE_PREVIEW3], [IMAGE_PREVIEW4], "
+							+" [IMAGE_PREVIEW5], [POSTERURL1], [POSTERURL2], [POSTERURL3], [POSTERURL4], [POSTERURL5], [POSTERURL6], [DURATION], "
+                            +" [GRADE], [C_LANG], [PACK_CONTENT], [FILESIZE480], [FILESIZE300], [FILESIZE240] "
+                            +" from "+contentTable
+                            +" where uploaded_date>='"+currentDate+"' and IsApp=1 "
+                            +" and content_id not in (select content_id from "+approvedTable+")";
+					
+					//System.out.println(approveQuery);					   					
+						
+					try{
+						con = dataSource.getConnection();
+						ps = con.prepareStatement(approveQuery);
+						int rows = ps.executeUpdate();
+												
+						LOGGER.info("rows inserted in approved: "+rows);
+					}
+					catch(Exception e){
+						ArrayList< String> exceptionList = new ArrayList<String>();
+						exceptionList.add(e.getMessage());
+						errors.put("General", exceptionList);
+						LOGGER.info(e.getMessage());
+					}
+					finally{
+						try {
+							
+							if(ps != null){
+								ps.close();					
+							}
+							if(con != null){
+								con.close();
+							}
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							ArrayList< String> exceptionList = new ArrayList<String>();
+							exceptionList.add(e.getMessage());
+							errors.put("General", exceptionList);
+							LOGGER.setLevel(Level.INFO);
+						    LOGGER.info(e.getMessage());				
+						}
+					}
+					
+					String procedureQuery = "Exec [Portaldb].[dbo].["+properties.getProperty("updateSearchInsertionProcedure")+"]";
+					Connection connection = null;
+					PreparedStatement preparedStatement = null;
+					try{
+						connection  = dataSource.getConnection();
+						preparedStatement = connection.prepareStatement(procedureQuery);
+						preparedStatement.execute();																
+					}
+					catch(Exception e){
+						e.printStackTrace();
+						LOGGER.info("catch proc");
+						LOGGER.info(e.getMessage());
+					}
+					finally{
+						try {
+							
+							if(preparedStatement != null){
+								preparedStatement.close();					
+							}
+							if(connection != null){
+								connection.close();
+							}
+						} catch (Exception e) {
+							LOGGER.info("catch proc1");
+							// TODO Auto-generated catch block							
+							LOGGER.setLevel(Level.INFO);
+						    LOGGER.info(e.getMessage());				
+						}
+					}
+					
+
 				}
 				   
 			   }  

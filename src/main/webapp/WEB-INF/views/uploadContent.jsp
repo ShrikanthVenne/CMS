@@ -12,10 +12,18 @@
 	<jsp:include page="menu.jsp"></jsp:include>
 	<div class="container">
 		<h3>Upload Content</h3>
-		
+		<br/>
 	    <form:form  method="POST" action="doUpload" class="form-horizontal" 
 	    	role="form" id="uploadForm"
 	    	enctype="multipart/form-data" modelAttribute="fileBO">
+	    	 <div class="form-group">
+	        	<label class="control-label col-sm-2">APP/WAP</label>
+	        	<div class="col-sm-10">
+	        		<label class="radio-inline"><input id="APP" type="radio" name="appOrWap" value="APP">APP</label>
+					<label class="radio-inline"><input id="WAP" type="radio" name="appOrWap" value="WAP">WAP</label>
+					<label class="radio-inline"><input id="BOTH" type="radio" name="appOrWap" value="BOTH">Both</label> 
+	        	</div>
+	        </div>
 	    	<div class="form-group">
 		        <label class="control-label col-sm-2" for="file">Upload File</label>
 		        <div class="col-sm-10">
@@ -23,12 +31,14 @@
 			        	<input type="file" name="file" id="file" />
 			        </span>
 			    </div>
-	        </div>   
+	        </div>   	       
 	        <div class="form-group">
     			<div class="col-sm-offset-2 col-sm-10">   
-	        		<button type="submit" class="btn btn-default" ><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Upload </button>
+	        		<button type="submit" class="btn btn-default" ><span class="glyphicon glyphicon-upload" ></span> Upload </button>
 	       		</div>
-	        </div>
+	        </div>	
+	        <input type="hidden" name="app" id="IsApp" value="true" />
+	        <input type="hidden" name="wap" id="IsWap" value="false" />        
 	    </form:form>
 	    <br/><br/>
 	    
@@ -74,7 +84,7 @@
 		 	<br/>
 		 	<div align="right" class="col-sm-offset-2 col-sm-10">
 		 		<button id="btnExport" class="btn btn-default" >
-		 			<span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
+		 			<span class="glyphicon glyphicon-download-alt" ></span>
 		 		</button>
 		 	</div>
 		 	<br/><br/>
@@ -112,6 +122,25 @@
 <script type="text/javascript">
 	$( document ).ready(function() {
 	    $("#uploadContent").addClass("active");
+	    
+	    //Select APP by default
+	    $("#APP").attr('checked', 'checked');
+	    $("#IsAPP").val("true");
+	    
+	    $('input[type=radio][name=appOrWap]').change(function() {
+	    	if(this.value == "APP"){
+	    		$("#IsApp").val("true");
+	    		$("#IsWap").val("false");
+	    	}
+	    	else if(this.value == "WAP"){
+	    		$("#IsWap").val("true");
+	    		$("#IsApp").val("false");
+	    	}
+	    	else{
+	    		$("#IsApp").val("true");
+	    		$("#IsWap").val("true");
+	    	}
+	    });
 	    $( "#uploadForm" ).submit(function( event ) {
 	    	 $(".modal").show();	    	  
 	    });

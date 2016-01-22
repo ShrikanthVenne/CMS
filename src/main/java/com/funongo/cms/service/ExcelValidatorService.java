@@ -705,8 +705,15 @@ public class ExcelValidatorService {
 			errors.add("CATEGORY_ID cannot be blank");
 		}
 		HashMap<String, ArrayList<String>> error = new HashMap<String, ArrayList<String>>();
-		if(errors.size() > 0)
-			error.put(rowMap.get("CONTENT_NAME"), errors);
+		if(errors.size() > 0){
+			String contentName = rowMap.get("CONTENT_NAME");
+			if(contentName != null){
+				error.put(contentName.replace("'", ""), errors);
+			}
+			else{
+				error.put(contentName, errors);
+			}
+		}
 		return error;
 	}
 	
