@@ -668,7 +668,7 @@ public class ExcelValidatorService {
 				}
 			}
 			
-			// validate SMARTURL2SIZE480, It's mandatory for Touchfone
+			// validate SMARTURL2SIZE480, It's mandatory for Touchfone/smarturl2
 			if (rowMap.get("SMARTURL2SIZE480") != null) {
 				String smartUrlSize = rowMap.get("SMARTURL2SIZE480");
 				// validate length of smartUrlSize
@@ -680,7 +680,7 @@ public class ExcelValidatorService {
 				errors.add("SMARTURL2SIZE480 cannot be blank");
 			}
 			
-			// validate SMARTURL2SIZE360, It's mandatory for Touchfone
+			// validate SMARTURL2SIZE360, It's mandatory for Touchfone/smarturl2
 			if (rowMap.get("SMARTURL2SIZE360") != null) {
 				String smartUrlSize = rowMap.get("SMARTURL2SIZE360");
 				// validate length of smartUrlSize
@@ -693,7 +693,7 @@ public class ExcelValidatorService {
 			}
 			
 			
-			// validate SMARTURL2SIZE240, It's mandatory for Touchfone
+			// validate SMARTURL2SIZE240, It's mandatory for Touchfone/smarturl2
 			if (rowMap.get("SMARTURL2SIZE240") != null) {
 				String smartUrlSize = rowMap.get("SMARTURL2SIZE240");
 				// validate length of smartUrlSize
@@ -706,7 +706,7 @@ public class ExcelValidatorService {
 			}
 			
 			
-			// validate SMARTURL2SIZE720, It's mandatory for Touchfone
+			// validate SMARTURL2SIZE720, It's mandatory for Touchfone/smarturl2
 			if (rowMap.get("SMARTURL2SIZE720") != null) {
 				String smartUrlSize = rowMap.get("SMARTURL2SIZE720");
 				// validate length of smartUrlSize
@@ -717,6 +717,43 @@ public class ExcelValidatorService {
 			else if(smartUrl2 != null){
 				errors.add("SMARTURL2SIZE720 cannot be blank");
 			}
+			
+			// validate FILESIZE480, It's mandatory for all categories
+			if (rowMap.get("FILESIZE480") != null) {
+				try {
+					Double.parseDouble(rowMap.get("FILESIZE480"));
+				} catch (NumberFormatException e) {
+					errors.add("FILESIZE480 should be a number");
+				}
+			} 
+			else if(smartUrl2 != null) {
+				errors.add("FILESIZE480 cannot be blank");
+			}
+			
+			// validate FILESIZE360, It's mandatory for all categories
+			if (rowMap.get("FILESIZE360") != null) {
+				try {
+					Double.parseDouble(rowMap.get("FILESIZE360"));
+				} catch (NumberFormatException e) {
+					errors.add("FILESIZE360 should be a number");
+				}
+			} 
+			else if(smartUrl2 != null) {
+				errors.add("FILESIZE360 cannot be blank");
+			}
+			
+			// validate FILESIZE240, It's mandatory for all categories
+			if (rowMap.get("FILESIZE240") != null) {
+				try {
+					Double.parseDouble(rowMap.get("FILESIZE240"));
+				} catch (NumberFormatException e) {
+					errors.add("FILESIZE240 should be a number");
+				}
+			} 
+			else if(smartUrl2 != null) {
+				errors.add("FILESIZE240 cannot be blank");
+			}
+			
 
 		} else {
 			errors.add("CATEGORY_ID cannot be blank");
