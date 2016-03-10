@@ -70,8 +70,20 @@ public class ImportService {
 		String app = fileBO.isApp() ? "1" : "0";
 
 		String wap = fileBO.isWap() ? "1" : "0";
+		
+		HashMap<String, ArrayList<String>> errors = new HashMap<String, ArrayList<String>>();
 
-		HashMap<String, HashSet<Integer>> ids = contentService.getAllCategoryIds();
+		HashMap<String, HashSet<Integer>> ids = new HashMap<String, HashSet<Integer>>();
+		try{
+			ids = contentService.getAllCategoryIds();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			ArrayList<String> errorList= new ArrayList<String>();
+			errorList.add("Error in connecting to database");
+			errors.put("General", errorList);
+		}
+				
 
 		HashSet<Integer> categories = ids.get("categoryIds");
 
@@ -84,7 +96,7 @@ public class ImportService {
 		// HashMap<String, ArrayList<String>> error = new HashMap<String,
 		// ArrayList<String>>();
 
-		HashMap<String, ArrayList<String>> errors = new HashMap<String, ArrayList<String>>();
+		
 
 		ArrayList<ContentBO> contentList = new ArrayList<ContentBO>();
 
@@ -127,6 +139,8 @@ public class ImportService {
 				}
 
 				mapArray.add(rowMap);
+				
+				// Column Values
 				columns.add("'C'");
 				columns.add(app);
 				columns.add(wap);
@@ -134,6 +148,7 @@ public class ImportService {
 				columns.add("getDate()");
 				columns.add("'APPROVED'");
 				columns.add("getDate()");
+				
 
 				// validate the content
 				errors.putAll(excelValidatorService.validateContent(rowMap, categories, subCategories, genres, tps));
@@ -141,10 +156,14 @@ public class ImportService {
 				// for(HashMap<String, ArrayList<String>> errorList: errors){
 				// System.out.println(errorList.);
 				// }
+				
+				// as SmartUrlProvider is added later, from the map take the value of it and put to columns
+				columns.add(rowMap.get("SMARTURLPROVIDER"));
 
 				rowValues.add("(" + StringUtils.collectionToCommaDelimitedString(columns) + ")");
 			}
-
+			
+			// Column Headers
 			colNames.add("PACK_CONTENT");
 			colNames.add("IsAPP");
 			colNames.add("IsWAP");
@@ -152,6 +171,9 @@ public class ImportService {
 			colNames.add("UPLOADED_DATE");
 			colNames.add("STATUS");
 			colNames.add("APPROVED_DATE");
+			
+			// also add SMARTURLPROVIDER to column headers
+			colNames.add("SMARTURLPROVIDER");
 
 			// Comma separated column names
 			String colNameString = StringUtils.collectionToDelimitedString(colNames, ",", "[", "]");
@@ -213,22 +235,24 @@ public class ImportService {
 							+ " [GENRE_ID], [SUB_GENRE], [LANGUAGE], [RATING], [SEARCH], [SHORT_DESCRIPTION], [LONG_DESCRIPTION], [CONTENT_TYPE], "
 							+ " [STATUS], [ALBUM_ID], [MOVIE_ID], [OS_ID], [FILE_SIZE], [CONTENT_PRODUCTION_DATE], [AGE_GROUP], [UPLOADED_BY], "
 							+ " [UPLOADED_DATE], [VALIDFROM], [VALIDTO], [APPROVED_DATE], [IMAGE_PREVIEW], [AUDIO_PREVIEW], [VIDEO_PREVIEW], "
-							+ " [PREVIEW_FILE_NAME], [CONTENT_VERSION], [SMARTURL1], [SMARTURL2], [DIRECTORS], [PRODUCERS], [MUSIC_DIRECTORS], "
+							+ " [PREVIEW_FILE_NAME], [CONTENT_VERSION], [SMARTURL1], [SMARTURL2], [SMARTURL3], [DIRECTORS], [PRODUCERS], [MUSIC_DIRECTORS], "
 							+ " [ACTORS], [ACTRESSES], [SINGERS], [CHOREOGRAPHER], [SUPPORTING_STAR_CAST], [LYRICIST], [REVIEW], [RELEASEDATE], "
 							+ " [PRODUCTION_COMPANIES], [IMAGE_PREVIEW1], [IMAGE_PREVIEW2], [IMAGE_PREVIEW3], [IMAGE_PREVIEW4], [IMAGE_PREVIEW5], "
 							+ " [POSTERURL1], [POSTERURL2], [POSTERURL3], [POSTERURL4], [POSTERURL5], [POSTERURL6], [DURATION], [GRADE], [C_LANG], "
-							+ " [PACK_CONTENT], [FILESIZE480], [FILESIZE360], [FILESIZE240])"
+							+ " [PACK_CONTENT], [FILESIZE480], [FILESIZE360], [FILESIZE240], [SMARTURLPROVIDER], [SMARTURL2SIZE480],"
+							+ " [SMARTURL2SIZE360], [SMARTURL2SIZE240], [SMARTURL2SIZE720])"							
 							+ " select [CONTENT_ID], [CONTENT_NAME], [DISPLAY_NAME], [TP_ID], [CATEGORY_ID], [SUBCATEGORY_ID], [WRAPPING_PARTNER], "
 							+ " [COST], [GENRE_ID], [SUB_GENRE], [LANGUAGE], [RATING], [SEARCH], [SHORT_DESCRIPTION], [LONG_DESCRIPTION], "
 							+ " [CONTENT_TYPE], [STATUS], [ALBUM_ID], [MOVIE_ID], [OS_ID], [FILE_SIZE], [CONTENT_PRODUCTION_DATE], [AGE_GROUP], "
 							+ " [UPLOADED_BY], [UPLOADED_DATE], [VALIDFROM], [VALIDTO], [APPROVED_DATE], [IMAGE_PREVIEW], [AUDIO_PREVIEW], "
-							+ " [VIDEO_PREVIEW], [PREVIEW_FILE_NAME], [CONTENT_VERSION], [SMARTURL1], [SMARTURL2], [DIRECTORS], [PRODUCERS], "
+							+ " [VIDEO_PREVIEW], [PREVIEW_FILE_NAME], [CONTENT_VERSION], [SMARTURL1], [SMARTURL2], [SMARTURL3], [DIRECTORS], [PRODUCERS], "
 							+ " [MUSIC_DIRECTORS], [ACTORS], [ACTRESSES], [SINGERS], [CHOREOGRAPHER], [SUPPORTING_STAR_CAST], [LYRICIST], [REVIEW], "
 							+ " [RELEASEDATE], [PRODUCTION_COMPANIES], [IMAGE_PREVIEW1], [IMAGE_PREVIEW2], [IMAGE_PREVIEW3], [IMAGE_PREVIEW4], "
 							+ " [IMAGE_PREVIEW5], [POSTERURL1], [POSTERURL2], [POSTERURL3], [POSTERURL4], [POSTERURL5], [POSTERURL6], [DURATION], "
-							+ " [GRADE], [C_LANG], [PACK_CONTENT], [FILESIZE480], [FILESIZE360], [FILESIZE240] "
+							+ " [GRADE], [C_LANG], [PACK_CONTENT], [FILESIZE480], [FILESIZE360], [FILESIZE240], [SMARTURLPROVIDER], [SMARTURL2SIZE480], "
+							+ " [SMARTURL2SIZE360], [SMARTURL2SIZE240], [SMARTURL2SIZE720]"
 							+ " from " + contentTable + " where uploaded_date>='" + currentDate + "' and IsApp=1 "
-							+ " and content_id not in (select content_id from " + approvedTable + ")";
+							+ " and content_id not in (select content_id from " + approvedTable + ") and content_id > "+maxContentId;
 
 					// System.out.println(approveQuery);
 

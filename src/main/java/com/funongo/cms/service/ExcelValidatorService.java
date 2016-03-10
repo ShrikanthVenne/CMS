@@ -24,6 +24,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 import com.funongo.cms.bo.Content;
+import com.sun.istack.internal.logging.Logger;
 
 @Service
 public class ExcelValidatorService {
@@ -208,9 +209,7 @@ public class ExcelValidatorService {
 				} catch (NumberFormatException e) {
 					errors.add("FILE_SIZE should be a number");
 				}
-			} else {
-				errors.add("FILE_SIZE cannot be blank");
-			}
+			} 
 
 			// validate content production date, It's mandatory for all
 			// categories
@@ -250,29 +249,42 @@ public class ExcelValidatorService {
 				}
 			} else {
 				errors.add("VALIDTO cannot be blank");
+			}						
+			
+			
+			// validate smart urls, It's mandatory for videos, movies and short films
+			String smartUrl1 = rowMap.get("SMARTURL1");
+			String smartUrl2 = rowMap.get("SMARTURL2");
+			String smartUrl3 = rowMap.get("SMARTURL3");
+			
+			if((category == new Integer(properties.getProperty("videosId")) || 
+				category == new Integer(properties.getProperty("moviesId")) || 
+				category == new Integer(properties.getProperty("shortFilmId")))
+					&& 
+				smartUrl1 == null && smartUrl2 == null && smartUrl3 == null){
+				errors.add("SmartUrl cannot be blank");
 			}
-
-			// validate smart url1, It's mandatory for videos
-			if (rowMap.get("SMARTURL1") != null) {
-				String search = rowMap.get("SMARTURL1");
-				// validate length of content
-				if (search.length() > 202) {
-					errors.add("SMARTURL1 cannot be greater than 200 characters");
-				}
-			} else if (category == new Integer(properties.getProperty("videosId"))) {
-				errors.add("SMARTURL1 cannot be blank");
-			}
-
-			// validate smart url2, It's mandatory for movies
-			if (rowMap.get("SMARTURL2") != null) {
-				String search = rowMap.get("SMARTURL2");
-				// validate length of content
-				if (search.length() > 202) {
-					errors.add("SMARTURL2 cannot be greater than 200 characters");
-				}
-			} else if (category == new Integer(properties.getProperty("moviesId"))) {
-				errors.add("SMARTURL2 cannot be blank");
-			}
+			
+			
+			// Make a binary String for smartUrlProvider
+			String smartUrlProviderString = "";
+			
+			smartUrlProviderString = smartUrl3 == null ? (smartUrlProviderString + 0) : (smartUrlProviderString + 1);
+			
+			smartUrlProviderString = smartUrl2 == null ? (smartUrlProviderString + 0) : (smartUrlProviderString + 1);
+			
+			smartUrlProviderString = smartUrl1 == null ? (smartUrlProviderString + 0) : (smartUrlProviderString + 1);
+			
+			System.out.println("smartUrlProviderString "+smartUrlProviderString);
+			
+			// Convert String to Integer			
+			int smartUrlProvider = Integer.parseInt(smartUrlProviderString, 2);
+			
+			System.out.println("smartUrlProvider "+smartUrlProvider);
+			
+			// Since SmartUrlProvide is not part of excel, add to the map
+			rowMap.put("SMARTURLPROVIDER", smartUrlProvider+"");
+			
 
 			// validate directors, It's mandatory for movies
 			if (rowMap.get("DIRECTORS") != null) {
@@ -654,6 +666,56 @@ public class ExcelValidatorService {
 				if (review.length() > 302) {
 					errors.add("REVIEW cannot be greater than 300 characters");
 				}
+			}
+			
+			// validate SMARTURL2SIZE480, It's mandatory for Touchfone
+			if (rowMap.get("SMARTURL2SIZE480") != null) {
+				String smartUrlSize = rowMap.get("SMARTURL2SIZE480");
+				// validate length of smartUrlSize
+				if (smartUrlSize.length() > 202) {
+					errors.add("SMARTURL2SIZE480 cannot be greater than 300 characters");
+				}
+			}
+			else if(smartUrl2 != null){
+				errors.add("SMARTURL2SIZE480 cannot be blank");
+			}
+			
+			// validate SMARTURL2SIZE360, It's mandatory for Touchfone
+			if (rowMap.get("SMARTURL2SIZE360") != null) {
+				String smartUrlSize = rowMap.get("SMARTURL2SIZE360");
+				// validate length of smartUrlSize
+				if (smartUrlSize.length() > 202) {
+					errors.add("SMARTURL2SIZE360 cannot be greater than 300 characters");
+				}
+			}
+			else if(smartUrl2 != null){
+				errors.add("SMARTURL2SIZE360 cannot be blank");
+			}
+			
+			
+			// validate SMARTURL2SIZE240, It's mandatory for Touchfone
+			if (rowMap.get("SMARTURL2SIZE240") != null) {
+				String smartUrlSize = rowMap.get("SMARTURL2SIZE240");
+				// validate length of smartUrlSize
+				if (smartUrlSize.length() > 202) {
+					errors.add("SMARTURL2SIZE240 cannot be greater than 300 characters");
+				}
+			}
+			else if(smartUrl2 != null){
+				errors.add("SMARTURL2SIZE240 cannot be blank");
+			}
+			
+			
+			// validate SMARTURL2SIZE720, It's mandatory for Touchfone
+			if (rowMap.get("SMARTURL2SIZE720") != null) {
+				String smartUrlSize = rowMap.get("SMARTURL2SIZE720");
+				// validate length of smartUrlSize
+				if (smartUrlSize.length() > 202) {
+					errors.add("SMARTURL2SIZE720 cannot be greater than 300 characters");
+				}
+			}
+			else if(smartUrl2 != null){
+				errors.add("SMARTURL2SIZE720 cannot be blank");
 			}
 
 		} else {

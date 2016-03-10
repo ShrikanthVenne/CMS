@@ -34,7 +34,7 @@ public class ContentService {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
 	
-	public HashMap<String, HashSet<Integer>> getAllCategoryIds(){
+	public HashMap<String, HashSet<Integer>> getAllCategoryIds() throws RuntimeException{
 		HashMap<String, HashSet<Integer>> ids = new HashMap<String, HashSet<Integer>>();
 		HashSet<Integer> categoryIds = new HashSet<Integer>();
 		HashSet<Integer> subCategoryIds = new HashSet<Integer>();
@@ -64,6 +64,7 @@ public class ContentService {
 		}
 		catch(Exception e){
 			LOGGER.info(e.getMessage());
+			throw new RuntimeException();
 		}
 		finally{
 			try {
@@ -79,7 +80,7 @@ public class ContentService {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				LOGGER.setLevel(Level.INFO);
-			    LOGGER.info(e.getMessage());				
+			    LOGGER.info(e.getMessage());				    
 			}
 		}
 		return ids;

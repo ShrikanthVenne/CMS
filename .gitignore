@@ -46,3 +46,7 @@ Network Trash Folder
 Temporary Items
 .apdisk
 /target/
+*.classpath
+*.component
+.settings/org.eclipse.wst.common.project.facet.core.xml
+*.class
