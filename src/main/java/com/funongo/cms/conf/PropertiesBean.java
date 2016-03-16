@@ -23,4 +23,19 @@ public class PropertiesBean {
 		}
 		return properties;
 	}
+	
+	@Bean(name="emailProperties")
+	public Properties emailProps(){
+		Properties properties = new Properties();
+		FileInputStream file;
+		try {
+			file = new FileInputStream("C:\\cms_config\\emailProperties.properties");			
+			properties.load(file);
+			file.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return properties;
+	}
 }
