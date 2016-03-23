@@ -884,7 +884,7 @@ public class ExcelValidatorService {
 
 		// validate actors, It's mandatory for movies
 		if (rowMap.get("ACTORS") != null) {
-			String actors = rowMap.get("	ACTORS").replace("'", "");
+			String actors = rowMap.get("ACTORS").replace("'", "");
 			content.setActors(actors);
 		} else if (existingContent != null && existingContent.getActors() != null) {
 			errors.add("ACTORS cannot be blank");
@@ -900,7 +900,7 @@ public class ExcelValidatorService {
 
 		// validate singers, It's mandatory for movies
 		if (rowMap.get("SINGERS") != null) {
-			String singers = rowMap.get("	SINGERS").replace("'", "");
+			String singers = rowMap.get("SINGERS").replace("'", "");
 			content.setSingers(singers);
 		} else if (existingContent != null && existingContent.getSingers() != null) {
 			errors.add("SINGERS cannot be blank");

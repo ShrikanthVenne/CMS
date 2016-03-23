@@ -46,15 +46,11 @@ public class ReportService {
 		
 		
 		
-		String query1 = "select b.category_name Category, c.genre_name Genre, count(distinct(a.content_id)) No_Of_Content from atom_content_approved a"
-				+" left outer join atom_category b on a.category_id=b.category_id "
-				+" left outer join atom_genre c on a.genre_id=c.genre_id "
-				+" where uploaded_date >=CONVERT(VARCHAR(10),GETDATE(),110) "
-				+" group by b.CATEGORY_NAME, c.genre_name "
-				+" UNION ALL " 
-				+" Select 'Total', '', count(distinct(content_id)) from atom_content_approved where uploaded_date >=CONVERT(VARCHAR(10),GETDATE(),110)";
+		String query1 = "Exec [Spx_CMSUploadStats] 1";
 		
-		String query2 = "Exec [Spx_CMSUploadStats]";
+		String query2 = "Exec [Spx_CMSUploadStats] 2";
+		
+		String query3 = "Exec [Spx_CMSUploadStats] 3";
 
 		
 		Connection con = null;
@@ -157,59 +153,71 @@ public class ReportService {
 			message += "</table>";
 			
 			message+="<br/><br/>";
-			message+="**This is a system generated email, please do not reply to this email";
+			message+="<b>Summary of Metadata in Different Languages on Chillx :<b><br/><br/>";
 			
 			System.out.println(message);
 			
 			rs.close();
 			ps.close();
 			
-						
 
-			
-			
-			/*String query3 = "";
 			ps = con.prepareStatement(query3);
 			rs = ps.executeQuery();
 			
-			message += "<table border=1 cellspacing=0, cellpadding=0><thead><tr>"
+			message += "<table  border='1' cellspacing='0', cellpadding='3'><thead><tr>"
 					+"<th>Category</th>"
-					+"<th>Injected</th>"
 					+"<th>Metadata_English</th>"
-					+"<th>Dubbing_Started</th>"
-					+"<th>Subtitle_Started</th>"
-					+"<th>Posterurl</th>"
-					+"<th>Posters_ML</th>"
-					+"<th>PreviewImage</th>"
-					+"<th>Video_Preview</th>"
-					+"<th>Saranyu_URL</th>"
-					+"<th>Touchfone_URL</th>"
-					+"<th>Youtube_URL</th>"
+					+"<th>Hindi</th>"
+					+"<th>Marathi</th>"
+					+"<th>Gujarati</th>"
+					+"<th>Punjabi</th>"
+					+"<th>Bengali</th>"
+					+"<th>Tamil</th>"
+					+"<th>Telugu</th>"
+					+"<th>Malayalam</th>"
+					+"<th>Kannada</th>"
 					+"</tr></thead>";
 			
 			while(rs.next()){
-				message += "<tr>"
-						+ "<td>"+rs.getString("Category")+"</td>"
-						+ "<td>"+rs.getString("Injected")+"</td>"
-						+ "<td>"+rs.getString("Metadata_English")+"</td>"
-						+ "<td>"+rs.getString("Dubbing_Started")+"</td>"
-						+ "<td>"+rs.getString("Subtitle_Started")+"</td>"
-						+ "<td>"+rs.getString("Posterurl")+"</td>"
-						+ "<td>"+rs.getString("Posters_ML")+"</td>"
-						+ "<td>"+rs.getString("PreviewImage")+"</td>"
-						+ "<td>"+rs.getString("Video_Preview")+"</td>"
-						+ "<td>"+rs.getString("Saranyu_URL")+"</td>"
-						+ "<td>"+rs.getString("Touchfone_URL")+"</td>"
-						+ "<td>"+rs.getString("Youtube_URL")+"</td>"
-						+ "</tr>";
-				//System.out.println(rs.getString(1));
+				if(rs.getString("Category").equalsIgnoreCase("Total")){
+					message += "<tr>"
+							+ "<td><b>"+rs.getString("Category")+"</b></td>"
+							+ "<td align='right'><b>"+rs.getString("Metadata_English")+"</td>"
+							+ "<td align='right'><b>"+rs.getString("Metadata_Hindi")+"</td>"
+							+ "<td align='right'><b>"+rs.getString("Metadata_Marathi")+"</td>"
+							+ "<td align='right'><b>"+rs.getString("Metadata_Gujarati")+"</td>"
+							+ "<td align='right'><b>"+rs.getString("Metadata_Punjabi")+"</td>"
+							+ "<td align='right'><b>"+rs.getString("Metadata_Bengali")+"</td>"
+							+ "<td align='right'><b>"+rs.getString("Metadata_Tamil")+"</td>"
+							+ "<td align='right'><b>"+rs.getString("Metadata_Telugu")+"</td>"
+							+ "<td align='right'><b>"+rs.getString("Metadata_Malayalam")+"</td>"
+							+ "<td align='right'><b>"+rs.getString("Metadata_Kannada")+"</td>"
+							+ "</tr>";				
+				}
+				else{
+					message += "<tr>"
+							+ "<td>"+rs.getString("Category")+"</td>"
+							+ "<td align='right'>"+rs.getString("Metadata_English")+"</td>"
+							+ "<td align='right'>"+rs.getString("Metadata_Hindi")+"</td>"
+							+ "<td align='right'>"+rs.getString("Metadata_Marathi")+"</td>"
+							+ "<td align='right'>"+rs.getString("Metadata_Gujarati")+"</td>"
+							+ "<td align='right'>"+rs.getString("Metadata_Punjabi")+"</td>"
+							+ "<td align='right'>"+rs.getString("Metadata_Bengali")+"</td>"
+							+ "<td align='right'>"+rs.getString("Metadata_Tamil")+"</td>"
+							+ "<td align='right'>"+rs.getString("Metadata_Telugu")+"</td>"
+							+ "<td align='right'>"+rs.getString("Metadata_Malayalam")+"</td>"
+							+ "<td align='right'>"+rs.getString("Metadata_Kannada")+"</td>"
+							+ "</tr>";				
+				}					
 			}
 			message += "</table>";
 			
 			message+="<br/><br/>";
 			
+			message+="**This is a system generated email, please do not reply to this email";
+			
 			rs.close();
-			ps.close();*/
+			ps.close();
 			
 			
 		}
