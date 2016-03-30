@@ -2,15 +2,15 @@ package com.funongo.cms.bo;
 
 public class CategoryBO {
 	
-	private Integer category_id;
+	private int category_id;
 	
 	private String category_name;
 
-	public Integer getCategory_id() {
+	public final int getCategory_id() {
 		return category_id;
 	}
 
-	public void setCategory_id(Integer category_id) {
+	public final void setCategory_id(int category_id) {
 		this.category_id = category_id;
 	}
 

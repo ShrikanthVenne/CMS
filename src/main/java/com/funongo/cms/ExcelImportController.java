@@ -6,14 +6,17 @@ import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.funongo.cms.bo.CategoryBO;
 import com.funongo.cms.bo.ContentBO;
 import com.funongo.cms.bo.FileBO;
 import com.funongo.cms.bo.UploadBO;
+import com.funongo.cms.service.ContentService;
 import com.funongo.cms.service.ImportService;
 
 @Controller
@@ -21,6 +24,9 @@ public class ExcelImportController {
 
 	@Autowired
 	ImportService importService;
+	
+	@Autowired
+	ContentService contentService;
 
 	@RequestMapping(value = "/bulkUpload", method = RequestMethod.GET)
 	public String upload() {
@@ -96,6 +102,20 @@ public class ExcelImportController {
 	@RequestMapping(value = "/viewContent", method = RequestMethod.GET)
 	public String viewContent() {
 		return "viewContent";
+	}
+	
+	@RequestMapping(value = "/viewCategory", method = RequestMethod.GET)
+	public String viewCategory(ModelMap modelMap) {
+		ArrayList<CategoryBO> categories = contentService.getAllCategories();
+		modelMap.addAttribute("categories", categories);		
+		return "viewCategory";
+	}
+	
+	@RequestMapping(value = "/viewGenre", method = RequestMethod.GET)
+	public String viewGenre(ModelMap modelMap) {
+		ArrayList<CategoryBO> categories = contentService.getAllCategories();
+		modelMap.addAttribute("categories", categories);		
+		return "viewGenre";
 	}
 
 }

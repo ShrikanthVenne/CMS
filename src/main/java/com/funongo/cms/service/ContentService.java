@@ -217,5 +217,46 @@ public class ContentService {
 		}
 		return tpIds;
 	}
+	
+	public ArrayList<CategoryBO> getAllCategories(){
+		ArrayList<CategoryBO> categories = new ArrayList<CategoryBO>();
+		LOGGER.setLevel(Level.INFO);
+		String query = "Select CATEGORY_ID, CATEGORY_NAME from ATOM_CATEGORY";
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try{
+			con = dataSource.getConnection();
+			ps = con.prepareStatement(query);
+			rs = ps.executeQuery();
+			while(rs.next()){
+				CategoryBO category = new CategoryBO();
+				category.setCategory_id(rs.getInt("CATEGORY_ID"));
+				category.setCategory_name(rs.getString("CATEGORY_NAME"));
+				categories.add(category);
+			}			
+		}
+		catch(Exception e){
+			LOGGER.info(e.getMessage());
+		}
+		finally{
+			try {
+				if(rs != null){				
+					rs.close();													
+				}
+				if(ps != null){
+					ps.close();					
+				}
+				if(con != null){
+					con.close();
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				LOGGER.setLevel(Level.INFO);
+			    LOGGER.info(e.getMessage());				
+			}
+		}
+		return categories;
+	}
 
 }

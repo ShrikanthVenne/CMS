@@ -25,6 +25,7 @@ public class DataSourceBean {
 		ds.setDefaultAutoCommit(true);
 		ds.setLogAbandoned(true);
 		ds.setRemoveAbandoned(true);
+		System.out.println("datasourceee:"+ds);
 		return ds;
 	}
 
