@@ -14,6 +14,7 @@ public class Content {
 	private String longDescription;
 	private String status;
 	private Date contentProductionDate;
+	private Date uploadedDate;
 	private String uploadedBy;
 	private Date validFrom;
 	private Date validTo;
@@ -34,6 +35,7 @@ public class Content {
 	private String lyricist;
 	private String review;
 	private Date releaseDate;
+	private String rDate;
 	private String productionCompanies;
 	private int imagePreview1;
 	private int imagePreview2;
@@ -48,6 +50,20 @@ public class Content {
 	private int posterUrl6;
 	private int categoryId;
 	private float fileSize;
+	private CategoryBO category;
+	private Genre genre;
+	private TP tp;
+	private String subGenre;
+	private String smartUrl1;
+	private String smartUrl2;
+	private String smartUrl3;
+	private float fileSize480;
+	private float fileSize360;
+	private float fileSize240;
+	private String smartUrl2Size480;
+	private String smartUrl2Size360;
+	private String smartUrl2Size240;
+	private String smartUrl2Size720;
 
 	public int getContentId() {
 		return contentId;
@@ -407,6 +423,134 @@ public class Content {
 
 	public void setFileSize(float fileSize) {
 		this.fileSize = fileSize;
+	}
+
+	public Date getUploadedDate() {
+		return uploadedDate;
+	}
+
+	public void setUploadedDate(Date uploadedDate) {
+		this.uploadedDate = uploadedDate;
+	}
+
+	public CategoryBO getCategory() {
+		return category;
+	}
+
+	public void setCategory(CategoryBO category) {
+		this.category = category;
+	}
+
+	public Genre getGenre() {
+		return genre;
+	}
+
+	public void setGenre(Genre genre) {
+		this.genre = genre;
+	}
+
+	public TP getTp() {
+		return tp;
+	}
+
+	public void setTp(TP tp) {
+		this.tp = tp;
+	}
+
+	public String getSubGenre() {
+		return subGenre;
+	}
+
+	public void setSubGenre(String subGenre) {
+		this.subGenre = subGenre;
+	}
+
+	public String getSmartUrl1() {
+		return smartUrl1;
+	}
+
+	public void setSmartUrl1(String smartUrl1) {
+		this.smartUrl1 = smartUrl1;
+	}
+
+	public String getSmartUrl2() {
+		return smartUrl2;
+	}
+
+	public void setSmartUrl2(String smartUrl2) {
+		this.smartUrl2 = smartUrl2;
+	}
+
+	public String getSmartUrl3() {
+		return smartUrl3;
+	}
+
+	public void setSmartUrl3(String smartUrl3) {
+		this.smartUrl3 = smartUrl3;
+	}
+
+	public float getFileSize480() {
+		return fileSize480;
+	}
+
+	public void setFileSize480(float fileSize480) {
+		this.fileSize480 = fileSize480;
+	}
+
+	public float getFileSize360() {
+		return fileSize360;
+	}
+
+	public void setFileSize360(float fileSize360) {
+		this.fileSize360 = fileSize360;
+	}
+
+	public float getFileSize240() {
+		return fileSize240;
+	}
+
+	public void setFileSize240(float fileSize240) {
+		this.fileSize240 = fileSize240;
+	}
+
+	public String getSmartUrl2Size480() {
+		return smartUrl2Size480;
+	}
+
+	public void setSmartUrl2Size480(String smartUrl2Size480) {
+		this.smartUrl2Size480 = smartUrl2Size480;
+	}
+
+	public String getSmartUrl2Size360() {
+		return smartUrl2Size360;
+	}
+
+	public void setSmartUrl2Size360(String smartUrl2Size360) {
+		this.smartUrl2Size360 = smartUrl2Size360;
+	}
+
+	public String getSmartUrl2Size240() {
+		return smartUrl2Size240;
+	}
+
+	public void setSmartUrl2Size240(String smartUrl2Size240) {
+		this.smartUrl2Size240 = smartUrl2Size240;
+	}
+
+	public String getSmartUrl2Size720() {
+		return smartUrl2Size720;
+	}
+
+	public void setSmartUrl2Size720(String smartUrl2Size720) {
+		this.smartUrl2Size720 = smartUrl2Size720;
+	}
+
+	public String getrDate() {
+		return rDate;
+	}
+
+	public void setrDate(String rDate) {
+		this.rDate = rDate;
 	}
 
 }

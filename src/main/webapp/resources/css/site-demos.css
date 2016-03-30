@@ -1,0 +1,101 @@
+#field {
+	margin-left: .5em;
+	float: left;
+}
+
+#field, label {
+	float: left;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: small;
+}
+
+br {
+	clear: both;
+}
+
+input[type="text"], textarea, select, input[type="file"] {
+	/* border: 1px solid black; */
+	width: 92%;
+	/* margin-bottom: 4%; */
+	font-family: 'Open Sans', sans-serif;
+	font-size: 95%;
+	color: #555;
+}
+
+input.error, textarea.error {
+	border: 1px solid red;
+}
+
+label.error {
+	background: url('../images/unchecked.gif') no-repeat;
+	padding-left: 16px;
+	margin-left: .3em;
+	color: red;
+}
+
+label.valid {
+	background: url('../images/checked.gif') no-repeat;
+	display: block;
+	width: 16px;
+	height: 16px;
+}
+
+.tdWidth {
+	width: 200px;
+}
+
+.tableWidth {
+	width: 24%;
+}
+
+.ui-tabs .ui-tabs-nav a {
+	background-color: #f6a828;
+	color: white;
+	background-image: none;
+	border: 1px solid black
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+	background-image: none;
+	background-color: #f6a828;
+}
+
+.labelclass {
+	font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;
+	font-size: 1.1em;
+}
+
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 1000;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background: rgba(255, 255, 255, .8) url('../images/ajax-loader.gif') 50% 50% no-repeat;
+}
+
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+div.loading {
+	overflow: hidden;
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+div.loading .modal {
+	display: block;
+}
+
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+body.loading {
+	overflow: hidden;
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+body.loading .modal {
+	display: block;
+}

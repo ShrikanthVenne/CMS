@@ -37,6 +37,7 @@ public class ExcelValidatorService {
 	DataSource dataSource;
 
 	@Autowired
+	@Qualifier("portalDB")
 	JdbcTemplate template;
 
 	public HashMap<String, ArrayList<String>> validateContent(Map<String, String> rowMap, HashSet<Integer> categories,
