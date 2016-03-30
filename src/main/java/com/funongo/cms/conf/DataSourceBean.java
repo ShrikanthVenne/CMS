@@ -33,4 +33,20 @@ public class DataSourceBean {
 	public JdbcTemplate getPortalDBJdbcTemplate() {
 		return new JdbcTemplate(portalDataSource());
 	}
+
+	@Bean(name = "CMSDataSource")
+	public DriverManagerDataSource getCmsTrialDataSource() {
+		DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
+		driverManagerDataSource.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+		driverManagerDataSource.setUrl("jdbc:sqlserver://43.242.215.66:1433;databaseName=CMS_TRIAL;");
+		driverManagerDataSource.setUsername("sa");
+		driverManagerDataSource.setPassword("sql@123");
+		return driverManagerDataSource;
+	}
+
+	@Bean(name = "CMSTrial")
+	public JdbcTemplate getCMSTrialJdbcTemplate() {
+		return new JdbcTemplate(getCmsTrialDataSource());
+	}
+
 }

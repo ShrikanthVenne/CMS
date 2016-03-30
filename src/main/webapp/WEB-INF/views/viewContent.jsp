@@ -8,7 +8,7 @@
 <title>Uploaded Content</title>
 </head>
 <body>
-	<jsp:include page="menu.jsp"></jsp:include>
+	
 	<div class="container">
 		<h3>Content Uploaded Successfully</h3>
 		<table class="table table-bordered">

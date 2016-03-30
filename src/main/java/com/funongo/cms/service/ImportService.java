@@ -53,9 +53,11 @@ public class ImportService {
 	ContentService contentService;
 
 	@Autowired
+	@Qualifier("portalDs")
 	DataSource dataSource;
 
 	@Autowired
+	@Qualifier("portalDB")
 	JdbcTemplate template;
 
 	@Resource(name = "appProperties")
