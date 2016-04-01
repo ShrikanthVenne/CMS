@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -182,10 +183,13 @@ public class ContentService {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		try {
+		try {System.out.println("before con "+(new Date()));
 			con = dataSource.getConnection();
+			System.out.println("after con "+(new Date()));
 			ps = con.prepareStatement(query);
+			System.out.println("before execute "+(new Date()));
 			rs = ps.executeQuery();
+			System.out.println("after execute "+(new Date()));
 			while (rs.next()) {
 				tpIds.add(rs.getInt(1));
 			}
@@ -220,9 +224,13 @@ public class ContentService {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try{
+			System.out.println("before con "+(new Date()));
 			con = dataSource.getConnection();
+			System.out.println("after con "+(new Date()));
 			ps = con.prepareStatement(query);
+			System.out.println("before execute "+(new Date()));
 			rs = ps.executeQuery();
+			System.out.println("after execute "+(new Date()));
 			while(rs.next()){
 				CategoryBO category = new CategoryBO();
 				category.setCategory_id(rs.getInt("CATEGORY_ID"));
@@ -282,6 +290,69 @@ public class ContentService {
 	public void updateContent(Content content) {
 		contentDao.updateContent(content);
 
+	}
+	
+	public ArrayList<Genre> getGenresFromCategories(String categories){
+		ArrayList<Genre> genres = new ArrayList<Genre>();
+		String query = "Select a.GENRE_ID, a.GENRE_NAME, b.CATEGORY_NAME from ATOM_GENRE a"
+				+ " inner join ATOM_CATEGORY b"
+				+ " on a.CATEGORY_ID = b.CATEGORY_ID"
+				+ " where b.CATEGORY_ID IN ("+categories+")";
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try{
+			con = dataSource.getConnection();
+			ps = con.prepareStatement(query);
+			rs = ps.executeQuery();
+			while(rs.next()){
+				CategoryBO category = new CategoryBO();				
+				category.setCategory_name(rs.getString("CATEGORY_NAME"));
+				Genre genre = new Genre();
+				genre.setGenreId(rs.getInt("GENRE_ID"));
+				genre.setGenreName(rs.getString("GENRE_NAME"));
+				genre.setCategory(category);
+				genres.add(genre);
+			}			
+		}
+		catch(Exception e){
+			LOGGER.info(e.getMessage());
+		}
+		finally{
+			try {
+				if(rs != null){				
+					rs.close();													
+				}
+				if(ps != null){
+					ps.close();					
+				}
+				if(con != null){
+					con.close();
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				LOGGER.setLevel(Level.INFO);
+			    LOGGER.info(e.getMessage());				
+			}
+		}
+		return genres;
+	}
+	
+	public int getSmartUrlProvider(String smartUrl1, String smartUrl2, String smartUrl3){
+		// Make a binary String for smartUrlProvider
+		String smartUrlProviderString = "";
+		
+		smartUrlProviderString = smartUrl3 == null ? (smartUrlProviderString + 0) : (smartUrlProviderString + 1);
+		
+		smartUrlProviderString = smartUrl2 == null ? (smartUrlProviderString + 0) : (smartUrlProviderString + 1);
+		
+		smartUrlProviderString = smartUrl1 == null ? (smartUrlProviderString + 0) : (smartUrlProviderString + 1);
+		
+		System.out.println("smartUrlProviderString "+smartUrlProviderString);
+		
+		// Convert String to Integer			
+		int smartUrlProvider = Integer.parseInt(smartUrlProviderString, 2);
+		return smartUrlProvider;
 	}
 
 }

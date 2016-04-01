@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.funongo.cms.bo.EmailBO;
@@ -20,6 +21,7 @@ import com.funongo.cms.bo.EmailBO;
 public class ReportService {
 	
 	@Autowired
+	@Qualifier("portalDs")
 	DataSource dataSource;
 	
 	public void sendDailyReport(){

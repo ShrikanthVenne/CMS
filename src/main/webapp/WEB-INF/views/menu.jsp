@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="resources/css/bootstrap.min.css">
 <link rel="stylesheet" href="resources/css/main.css">
 <script src="<c:url value="resources/js/jquery.js"/>"></script>
+<script src="resources/js/jquery.validate.js"></script>
 <script src="resources/js/bootstrap.min.js"></script>
 <title>Insert title here</title>
 </head>

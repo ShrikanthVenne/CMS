@@ -39,6 +39,9 @@ public class ExcelValidatorService {
 	@Autowired
 	@Qualifier("portalDB")
 	JdbcTemplate template;
+	
+	@Autowired
+	ContentService contentService;
 
 	public HashMap<String, ArrayList<String>> validateContent(Map<String, String> rowMap, HashSet<Integer> categories,
 			HashSet<Integer> subCategories, HashSet<Integer> genres, HashSet<Integer> tps) {
@@ -267,7 +270,7 @@ public class ExcelValidatorService {
 			}
 			
 			
-			// Make a binary String for smartUrlProvider
+			/*// Make a binary String for smartUrlProvider
 			String smartUrlProviderString = "";
 			
 			smartUrlProviderString = smartUrl3 == null ? (smartUrlProviderString + 0) : (smartUrlProviderString + 1);
@@ -277,12 +280,10 @@ public class ExcelValidatorService {
 			smartUrlProviderString = smartUrl1 == null ? (smartUrlProviderString + 0) : (smartUrlProviderString + 1);
 			
 			System.out.println("smartUrlProviderString "+smartUrlProviderString);
-			
+			*/
 			// Convert String to Integer			
-			int smartUrlProvider = Integer.parseInt(smartUrlProviderString, 2);
-			
-			System.out.println("smartUrlProvider "+smartUrlProvider);
-			
+			int smartUrlProvider = contentService.getSmartUrlProvider(smartUrl1, smartUrl2, smartUrl3);
+			System.out.println("provider "+smartUrlProvider);
 			// Since SmartUrlProvide is not part of excel, add to the map
 			rowMap.put("SMARTURLPROVIDER", smartUrlProvider+"");
 			

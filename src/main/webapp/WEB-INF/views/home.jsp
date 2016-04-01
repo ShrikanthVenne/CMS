@@ -5,7 +5,6 @@
 	<title>Home</title>
 </head>
 <body>
-<jsp:include page="menu.jsp"></jsp:include>
 	<div class="container">
 		<h1>
 			Welcome!  

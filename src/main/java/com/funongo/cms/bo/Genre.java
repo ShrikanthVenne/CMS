@@ -5,6 +5,7 @@ public class Genre {
 	private String genreName;
 	private int genreOrder;
 	private String imageUrl;
+	private CategoryBO category;
 
 	public Genre() {
 	}
@@ -48,6 +49,14 @@ public class Genre {
 
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
+	}
+
+	public final CategoryBO getCategory() {
+		return category;
+	}
+
+	public final void setCategory(CategoryBO category) {
+		this.category = category;
 	}
 
 }

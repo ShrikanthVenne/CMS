@@ -5,45 +5,42 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>View Categories</title>
+<title>View Genres</title>
 
 <link rel="stylesheet" href="resources/css/bootstrap-multiselect.css">
 </head>
 <body>
-	<jsp:include page="menu.jsp"></jsp:include>
 	<div class="container">
 		<h3>Genre List</h3>
 		<br/>
 		<div class="form-group">
-			<form action="" class="form-horizontal">
-	        	<label class="control-label col-sm-2">Categories</label>        
-	       		<select id="categories" multiple="multiple" class="col-sm-10">
-					<c:forEach items="${categories}" var="category">
-						<option value="${category.category_id}">${category.category_name}</option>				
-					</c:forEach>
-				</select>
+			<form action="" class="form-horizontal" id="catForm">
+	        	<label class="control-label col-sm-2">Categories</label>   
+	        	<div class="col-sm-2">     
+		       		<select id="categories" name="categories" multiple="multiple" class="">
+						<c:forEach items="${categories}" var="category">
+							<option value="${category.category_id}">${category.category_name}</option>				
+						</c:forEach>
+					</select>
+					<label id="categoryLabel" style="display: none; color:red">Category is required</label>					
+				</div>
+				&nbsp;	
+				<button type="button" class="btn btn-default btn-sm col-sm" onclick="getGenres()">
+		          <span class="glyphicon glyphicon-list"></span> List Genres
+		        </button>									
 			</form>        	
 	    </div>
-		
-		<%-- <table class="table table-bordered">
-			<thead>
-				<tr>
-					<th>Id</th>
-					<th>Name</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach items="${categories}" var="category">
-					<tr>
-						<td>${category.category_id}</td>
-						<td>${category.category_name}</td>
-					</tr>
-				</c:forEach>
-			</tbody>		
-		</table>	 --%>
+	    <br/><br/>
+	    <div id="genre">
+	    	
+	    </div>	
 	</div>
 <script src="resources/js/bootstrap-multiselect.js"></script>
+<script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js"></script>
+		
 <script type="text/javascript">
+    var selectedCategories = [];
 	$(document).ready(function(){
 		$('#categories').multiselect({ 
 	         includeSelectAllOption: true,
@@ -51,16 +48,35 @@
 	         enableCaseInsensitiveFiltering:true	        	         
 	     });
 		
-		$('#categories').on('change', function(){
-			var cats = $('#categories option:selected');
-            var selected = [];
-            $(cats).each(function(index, brand){
-                selected.push($(this).val());
-            });
-            console.log(selected);
-		});
+		 $("#categories").multiselect('selectAll', false);
+		 $("#categories").multiselect('updateButtonText');
+		
 	});	
-	
+
+	function getGenres(){
+		
+		
+		if($('#categories').val() != null){
+			$('#categoryLabel').hide();
+			 $.ajax({
+				 url: "${pageContext.request.contextPath}/getGenreFromCategory",
+				 data:{
+					 categories:$('#categories').val()
+				 },
+				 success: function(result){
+			        $('#genre').html(result);
+			        $('#genreTable').dataTable();
+			     },
+			     error: function(error){
+				   
+				 }
+			 });
+		}
+		else{
+			$('#categoryLabel').show();
+		}
+		
+	}
 	
 </script>	
 </body>
