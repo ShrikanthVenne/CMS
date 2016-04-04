@@ -9,7 +9,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<jsp:include page="menu.jsp"></jsp:include>
 	<div class="container">
 		<h3>Upload Language Content</h3>
 		<br />

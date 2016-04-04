@@ -6,8 +6,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>View Genres</title>
-
 <link rel="stylesheet" href="resources/css/bootstrap-multiselect.css">
+<script type="text/javascript">
+	var contextPath = "${pageContext.request.contextPath}";
+</script>
 </head>
 <body>
 	<div class="container">
@@ -24,10 +26,11 @@
 					</select>
 					<label id="categoryLabel" style="display: none; color:red">Category is required</label>					
 				</div>
-				&nbsp;	
-				<button type="button" class="btn btn-default btn-sm col-sm" onclick="getGenres()">
-		          <span class="glyphicon glyphicon-list"></span> List Genres
-		        </button>									
+				<div class="col-sm-2">  
+					<button type="button" class="btn btn-default btn-sm col-sm" onclick="getGenres()">
+			          <span class="glyphicon glyphicon-list"></span> List Genres
+			        </button>	
+			    </div>								
 			</form>        	
 	    </div>
 	    <br/><br/>
@@ -38,46 +41,6 @@
 <script src="resources/js/bootstrap-multiselect.js"></script>
 <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js"></script>
-		
-<script type="text/javascript">
-    var selectedCategories = [];
-	$(document).ready(function(){
-		$('#categories').multiselect({ 
-	         includeSelectAllOption: true,
-	         enableFiltering:true,        
-	         enableCaseInsensitiveFiltering:true	        	         
-	     });
-		
-		 $("#categories").multiselect('selectAll', false);
-		 $("#categories").multiselect('updateButtonText');
-		
-	});	
-
-	function getGenres(){
-		
-		
-		if($('#categories').val() != null){
-			$('#categoryLabel').hide();
-			 $.ajax({
-				 url: "${pageContext.request.contextPath}/getGenreFromCategory",
-				 data:{
-					 categories:$('#categories').val()
-				 },
-				 success: function(result){
-			        $('#genre').html(result);
-			        $('#genreTable').dataTable();
-			     },
-			     error: function(error){
-				   
-				 }
-			 });
-		}
-		else{
-			$('#categoryLabel').show();
-		}
-		
-	}
-	
-</script>	
+<script src="resources/js/genre.js"></script>	
 </body>
 </html>

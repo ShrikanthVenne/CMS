@@ -7,15 +7,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>View Categories</title>
 </head>
-<body>
-	<jsp:include page="menu.jsp"></jsp:include>
+<body>	
 	<div class="container">
 		<h3>Category List</h3>
-		<table class="table table-bordered">
+		<table class="table table-bordered table-condensed">
 			<thead>
 				<tr>
-					<th>Id</th>
-					<th>Name</th>
+					<th class="col-md-1">Id</th>
+					<th class="col-md-2">Name</th>
 				</tr>
 			</thead>
 			<tbody>
