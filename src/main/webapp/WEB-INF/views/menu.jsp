@@ -43,7 +43,8 @@
 					></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="viewCategory">Category</a></li>
-						<li><a href="viewGenre">View Genre</a></li>					
+						<li><a href="viewGenre">Genre</a></li>	
+						<li><a href="viewContentProvider">CP</a></li>					
 					</ul>
 			     </li>
 			</ul>

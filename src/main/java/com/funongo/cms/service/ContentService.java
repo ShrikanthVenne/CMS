@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import com.funongo.cms.bo.CategoryBO;
 import com.funongo.cms.bo.Content;
 import com.funongo.cms.bo.ContentBO;
+import com.funongo.cms.bo.ContentProvider;
 import com.funongo.cms.bo.Genre;
 import com.funongo.cms.bo.TP;
 import com.funongo.cms.dao.ContentDao;
@@ -353,6 +354,52 @@ public class ContentService {
 		// Convert String to Integer			
 		int smartUrlProvider = Integer.parseInt(smartUrlProviderString, 2);
 		return smartUrlProvider;
+	}
+	
+	public ArrayList<ContentProvider> getAllContentProviders(){
+		ArrayList<ContentProvider> contentProviders = new ArrayList<ContentProvider>();
+		LOGGER.setLevel(Level.INFO);
+		String query = "Select TP_ID, TP_NAME, COMPANY_NAME, ADDRESS, CONTRACT_START_DATE, CONTRACT_END_DATE from ATOM_TP";
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try{			
+			con = dataSource.getConnection();			
+			ps = con.prepareStatement(query);			
+			rs = ps.executeQuery();			
+			while(rs.next()){
+				ContentProvider contentProvider = new ContentProvider();
+				contentProvider.setId(rs.getLong("TP_ID"));
+				contentProvider.setName(rs.getString("TP_NAME"));
+				contentProvider.setCompanyName(rs.getString("COMPANY_NAME"));
+				contentProvider.setAddress(rs.getString("ADDRESS"));
+				contentProvider.setContractStartDate(rs.getDate("CONTRACT_START_DATE"));
+				contentProvider.setContractEndDate(rs.getDate("CONTRACT_END_DATE"));
+				System.out.println(contentProvider.getContractStartDate());
+				contentProviders.add(contentProvider);
+			}			
+		}
+		catch(Exception e){
+			LOGGER.info(e.getMessage());
+		}
+		finally{
+			try {
+				if(rs != null){				
+					rs.close();													
+				}
+				if(ps != null){
+					ps.close();					
+				}
+				if(con != null){
+					con.close();
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				LOGGER.setLevel(Level.INFO);
+			    LOGGER.info(e.getMessage());				
+			}
+		}
+		return contentProviders;
 	}
 
 }

@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.funongo.cms.bo.CategoryBO;
 import com.funongo.cms.bo.ContentBO;
+import com.funongo.cms.bo.ContentProvider;
 import com.funongo.cms.bo.FileBO;
 import com.funongo.cms.bo.Genre;
 import com.funongo.cms.bo.UploadBO;
@@ -128,6 +129,13 @@ public class ExcelImportController {
 		ArrayList<Genre> genres = contentService.getGenresFromCategories(categories);
 		modelMap.addAttribute("genres", genres);
 		return "_genre";
+	}
+	
+	@RequestMapping(value = "/viewContentProvider", method = RequestMethod.GET)
+	public String viewContentProvider(ModelMap modelMap) {
+		ArrayList<ContentProvider> cps = contentService.getAllContentProviders();
+		modelMap.addAttribute("cps", cps);		
+		return "viewContentProvider";
 	}
 
 }
