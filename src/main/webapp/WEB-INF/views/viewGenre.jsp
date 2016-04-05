@@ -15,24 +15,27 @@
 	<div class="container">
 		<h3>Genre List</h3>
 		<br/>
-		<div class="form-group">
-			<form action="" class="form-horizontal" id="catForm">
-	        	<label class="control-label col-sm-2">Categories</label>   
-	        	<div class="col-sm-2">     
-		       		<select id="categories" name="categories" multiple="multiple" class="">
+		
+		<form action="" class="form-inline" id="catForm">
+			<div class="form-group">
+	        	<label >Categories:</label>  
+	        	<span>
+		        	<select id="categories" name="categories" multiple="multiple" >
 						<c:forEach items="${categories}" var="category">
 							<option value="${category.category_id}">${category.category_name}</option>				
 						</c:forEach>
 					</select>
-					<label id="categoryLabel" style="display: none; color:red">Category is required</label>					
-				</div>
-				<div class="col-sm-2">  
-					<button type="button" class="btn btn-default btn-sm col-sm" onclick="getGenres()">
-			          <span class="glyphicon glyphicon-list"></span> List Genres
-			        </button>	
-			    </div>								
-			</form>        	
-	    </div>
+					<label id="categoryLabel" style="display: none; color:red">Category is required</label>
+				</span> 	        	   	       												
+			</div>
+			<br/><br/>
+			<div>
+				<button type="button" class="btn btn-default btn-sm" onclick="getGenres()">
+		          <span class="glyphicon glyphicon-list"></span> List Genres
+		        </button>	
+			</div>															  									
+		</form>        	
+	    
 	    <br/><br/>
 	    <div id="genre">
 	    	

@@ -10,11 +10,11 @@
 <body>	
 	<div class="container">
 		<h3>Category List</h3>
-		<table class="table table-bordered table-condensed">
+		<table class="table table-bordered table-nonfluid">
 			<thead>
 				<tr>
-					<th class="col-md-1">Id</th>
-					<th class="col-md-2">Name</th>
+					<th class="col-md-1">ID</th>
+					<th class="col-md-2">NAME</th>
 				</tr>
 			</thead>
 			<tbody>

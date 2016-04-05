@@ -42,3 +42,7 @@ body {
 	border-radius:.5em;
 	padding: 8px 35px 8px 14px;
 }
+
+.table-nonfluid {
+   width: auto !important;
+}
