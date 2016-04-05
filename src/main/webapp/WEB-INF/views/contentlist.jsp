@@ -67,19 +67,20 @@ td, th {
 			<tbody>
 				<c:forEach items="${wrapper.contents }" var="content" varStatus="count">
 					<tr>
-						<td align="center"><c:out value="${content.genre.genreName }"></c:out></td>
-						<td align="center"><c:out value="${content.displayName}"></c:out></td>
-						<td align="center"><c:out value="${content.language}"></c:out></td>
-						<td align="center"><c:out value="${content.rating }"></c:out></td>
-						<td align="center"><c:out value="${content.shortDescription }"></c:out></td>
-						<td align="center"><c:out value="${content.longDescription }"></c:out></td>
-						<td align="center"><c:out value="${content.search }"></c:out></td>
+						<td align="center" id="genreNameId${count.index }"><c:out value="${content.genre.genreName }"></c:out></td>
+						<td align="center" id="dispNameId${count.index }"><c:out value="${content.displayName}"></c:out></td>
+						<td align="center" id="language${count.index }"><c:out value="${content.language}"></c:out></td>
+						<td align="center" id="rating${count.index }"><c:out value="${content.rating }"></c:out></td>
+						<td align="center" id="shortDesc${count.index }"><c:out value="${content.shortDescription }"></c:out></td>
+						<td align="center" id="longDesc${count.index }"><c:out value="${content.longDescription }"></c:out></td>
+						<td align="center" id="search${count.index }"><c:out value="${content.search }"></c:out></td>
 						<td align="center"><c:out value="${content.uploadedDate }"></c:out></td>
 						<td align="center"><c:out value="${content.uploadedBy}"></c:out></td>
 						<td align="center"><a href="#" id="EditContent${count.index }" onclick="getContentEditable(${count.index})">Edit</a></td>
 						<td align="center">Delete</td>
 					</tr>
 					<input type="hidden" id="contentId${count.index }" value="${content.contentId }">
+					<input type="hidden" id="categoryIdHidden" value="${content.category.category_id }">
 				</c:forEach>
 				<c:if test="${counter == 0 }">
 					<tr>
@@ -95,10 +96,10 @@ td, th {
 		<img alt="" src="resources/images/loading_spinner.gif" />
 	</div>
 </div>
-<div id="editContentDialog" title="Edit Content">
-	<input type="hidden" id="dialogNumber" name="dialogCount" value="">
+<div id="editContentDialog" title="Edit Content" style="display: none;">
 	<h3>Content</h3>
 	<form class="form-group" action="contentUpdation" id="contentUpdationForm">
+		<input type="hidden" id="dialogNumber" name="dialogNumberName" value="">
 		<table width="100%">
 			<tr>
 				<td width="25%"><label for="displayName" class="control-label">Display Name</label></td>
@@ -108,15 +109,15 @@ td, th {
 						<input type="hidden" id="contentIdText" name="contentId" value="${content.contentId}">
 					</spring:bind></td>
 				<td width="25%"><label for="Category" class="control-label">Category</label></td>
-				<td width="25%"><label for="Category" class="col-xs-2" id="categoryName"><spring:bind path="content.category.category_name">
-							<input type="hidden" id="categoryNameId" name="category.category_name" value="${content.category.category_name }">
-						</spring:bind> <spring:bind path="content.category.category_id">
-							<input type="hidden" id="categoryIdText" name="category.category_id" value="${content.category.category_id}">
-						</spring:bind></label></td>
+				<td width="25%"><label for="Category" class="col-xs-2" id="categoryName"></label> <spring:bind path="content.category.category_name">
+						<input type="hidden" id="categoryNameId" name="category.category_name" value="${content.category.category_name }">
+					</spring:bind> <spring:bind path="content.category.category_id">
+						<input type="hidden" id="categoryIdText" name="category.category_id" value="${content.category.category_id}">
+					</spring:bind></td>
 			</tr>
 			<tr>
 				<td><label for="displayName" class="control-label col-xs-2"></label></td>
-				<td><div class="col-xs-3" id="displayNameError"></div></td>
+				<td id="displayNameError"></td>
 				<td></td>
 				<td></td>
 			</tr>
@@ -141,7 +142,7 @@ td, th {
 			<tr>
 				<td><label for="Genre" class="control-label">Sub Genres</label></td>
 				<td><spring:bind path="content.subGenre">
-						<select name="subGenre" id="subGenresSelect" multiple="multiple">
+						<select name="subGenre" id="subGenresSelect" multiple="multiple" style="width: 200px;">
 							<c:forEach items="${genres }" var="item">
 								<option value="${item.genreName }" <c:if test="${content.genre.genreName == item.genreName }"> selected="selected"</c:if>><c:out value="${item.genreName }" /></option>
 							</c:forEach>
@@ -164,7 +165,7 @@ td, th {
 			</tr>
 			<tr>
 				<td><label class="control-label col-xs-2"></label></td>
-				<td colspan="3"><div class="col-xs-6" id="searchError"></div></td>
+				<td id="searchError"></td>
 			</tr>
 			<tr>
 				<td><label for="Short Description" class="control-label">Short Description</label></td>
@@ -174,7 +175,7 @@ td, th {
 			</tr>
 			<tr>
 				<td><label class="control-label col-xs-2"></label></td>
-				<td colspan="3"><div class="col-xs-6" id="shortDescError"></div></td>
+				<td id="shortDescError"></td>
 			</tr>
 			<tr>
 				<td><label for="Long Description" class="control-label">Long Description</label></td>
@@ -184,41 +185,25 @@ td, th {
 			</tr>
 			<tr>
 				<td><label class="control-label"></label></td>
-				<td colspan="3"><div class="col-xs-3" id="longDescError"></div></td>
+				<td id="longDescError"></td>
 			</tr>
 			<tr>
 				<td><label for="Rating" class="control-label">Rating</label></td>
 				<td><spring:bind path="content.rating">
 						<input type="text" class="form-control" id="ratingId" name="rating" value="${status.value }">
 					</spring:bind></td>
-				<td><label for="smartUrl1" class="control-label">Smart Url1</label></td>
-				<td><spring:bind path="content.smartUrl1">
-						<input type="text" class="form-control" id="smartUrl1Id" name="smartUrl1" value="${status.value }" maxlength="200">
+				<td><label for="fileSize" class="control-label">File Size</label></td>
+				<td><spring:bind path="content.fileSize">
+						<input type="text" class="form-control" id="fileSizeId" name="fileSize" value="${status.value }">
 					</spring:bind></td>
 			</tr>
 			<tr>
 				<td><label class="control-label"></label></td>
-				<td><div class="col-xs-3" id="ratingError"></div></td>
+				<td id="ratingError"></td>
 				<td><label class="control-label"></label></td>
-				<td><div class="col-xs-3" id="smartUrl1Error"></div></td>
+				<td id="fileSizeError"></td>
 			</tr>
-			<tr>
-				<td><label for="smartUrl2" class="control-label">Smart Url2</label></td>
-				<td><spring:bind path="content.smartUrl2">
-						<input type="text" class="form-control" id="smartUrl2Id" name="smartUrl2" value="${status.value }" maxlength="200">
-					</spring:bind></td>
-				<td><label for="smartUrl3" class="control-label">Smart Url3</label></td>
-				<td><spring:bind path="content.smartUrl3">
-						<input type="text" class="form-control" id="smartUrl3Id" name="smartUrl3" value="${status.value }" maxlength="200">
-					</spring:bind></td>
-			</tr>
-			<tr>
-				<td><label class="control-label"></label></td>
-				<td><div class="col-xs-3" id="smartUrl2Error"></div></td>
-				<td><label class="control-label"></label></td>
-				<td><div class="col-xs-3" id="smartUrl3Error"></div></td>
-			</tr>
-			<c:if test="${content.category.category_id == 1 }">
+			<c:if test="${content.categoryId == 1 }">
 				<tr>
 					<td><label for="Directors" class="control-label">Directors</label></td>
 					<td><spring:bind path="content.directors">
@@ -231,9 +216,9 @@ td, th {
 				</tr>
 				<tr>
 					<td><label class="control-label"></label></td>
-					<td><div class="col-xs-3" id="directorsError"></div></td>
+					<td id="directorsError"></td>
 					<td><label class="control-label"></label></td>
-					<td><div class="col-xs-3" id="producersError"></div></td>
+					<td id="producersError"></td>
 				</tr>
 				<tr>
 					<td><label for="musicDirectors" class="control-label">Music Directors</label></td>
@@ -247,9 +232,9 @@ td, th {
 				</tr>
 				<tr>
 					<td><label class="control-label"></label></td>
-					<td><div class="col-xs-3" id="musicDirectorsError"></div></td>
+					<td id="musicDirectorsError"></td>
 					<td><label class="control-label"></label></td>
-					<td><div class="col-xs-3" id="actorsError"></div></td>
+					<td id="actorsError"></td>
 				</tr>
 				<tr>
 					<td><label for="actresses" class="control-label">Actresses</label></td>
@@ -263,9 +248,9 @@ td, th {
 				</tr>
 				<tr>
 					<td><label class="control-label"></label></td>
-					<td><div class="col-xs-3" id="actressesError"></div></td>
+					<td id="actressesError"></td>
 					<td><label class="control-label"></label></td>
-					<td><div class="col-xs-3" id="singersError"></div></td>
+					<td id="singersError"></td>
 				</tr>
 				<tr>
 					<td><label for="choreographer" class="control-label">Choreographer</label></td>
@@ -279,9 +264,9 @@ td, th {
 				</tr>
 				<tr>
 					<td><label class="control-label"></label></td>
-					<td><div class="col-xs-3" id="choreographerError"></div></td>
+					<td id="choreographerError"></td>
 					<td><label class="control-label"></label></td>
-					<td><div class="col-xs-3" id="supportingStarCastError"></div></td>
+					<td id="supportingStarCastError"></td>
 				</tr>
 				<tr>
 					<td><label for="lyricist" class="control-label">Lyricist</label></td>
@@ -295,14 +280,14 @@ td, th {
 				</tr>
 				<tr>
 					<td><label class="control-label"></label></td>
-					<td><div class="col-xs-3" id="lyricistError"></div></td>
+					<td id="lyricistError"></td>
 					<td></td>
 					<td></td>
 				</tr>
 				<tr>
 					<td><label for="releaseDate" class="control-label">Release Date</label></td>
 					<td><spring:bind path="content.rDate">
-							<input type="text" class="form-control" id="releaseDateId" name="rDate" value="${status.value }" readonly="readonly">
+							<input type="text" class="form-control releaseDatepicker" id="releaseDateId" name="rDate" value="${status.value }" readonly="readonly">
 						</spring:bind></td>
 					<td><label for="productionCompanies" class="control-label">Production Companies</label></td>
 					<td><spring:bind path="content.productionCompanies">
@@ -311,75 +296,93 @@ td, th {
 				</tr>
 				<tr>
 					<td><label class="control-label"></label></td>
-					<td><div class="col-xs-3" id="rDateError"></div></td>
+					<td id="rDateError"></td>
 					<td><label class="control-label"></label></td>
-					<td><div class="col-xs-3" id="productionCompaniesError"></div></td>
+					<td id="productionCompaniesError"></td>
 				</tr>
 			</c:if>
-			<tr>
-				<td><label for="fileSize" class="control-label">File Size</label></td>
-				<td><spring:bind path="content.fileSize">
-						<input type="text" class="form-control" id="fileSizeId" name="fileSize" value="${status.value }">
-					</spring:bind></td>
-				<td><label for="fileSize240" class="control-label">File Size240</label></td>
-				<td><spring:bind path="content.fileSize240">
-						<input type="text" class="form-control" id="fileSize240Id" name="fileSize240" value="${status.value }">
-					</spring:bind></td>
-			</tr>
-			<tr>
-				<td><label class="control-label"></label></td>
-				<td><div class="col-xs-3" id="fileSizeError"></div></td>
-				<td><label class="control-label"></label></td>
-				<td><div class="col-xs-3" id="fileSize240Error"></div></td>
-			</tr>
-			<tr>
-				<td><label for="fileSize360" class="control-label">File Size360</label></td>
-				<td><spring:bind path="content.fileSize360">
-						<input type="text" class="form-control" id="fileSize360Id" name="fileSize360" value="${status.value }">
-					</spring:bind></td>
-				<td><label for="fileSize480" class="control-label">File Size480</label></td>
-				<td><spring:bind path="content.fileSize480">
-						<input type="text" class="form-control" id="fileSize480Id" name="fileSize480" value="${status.value }">
-					</spring:bind></td>
-			</tr>
-			<tr>
-				<td><label class="control-label"></label></td>
-				<td><div class="col-xs-3" id="fileSize360Error"></div></td>
-				<td><label class="control-label"></label></td>
-				<td><div class="col-xs-3" id="fileSize480Error"></div></td>
-			</tr>
-			<tr>
-				<td><label for="smartUrl2Size240" class="control-label">Smart Url2 Size240</label></td>
-				<td><spring:bind path="content.smartUrl2Size240">
-						<input type="text" class="form-control" id="smartUrl2Size240Id" name="smartUrl2Size240" value="${status.value }" maxlength="200">
-					</spring:bind></td>
-				<td><label for="smartUrl2Size360" class="control-label">Smart Url2 Size360</label></td>
-				<td><spring:bind path="content.smartUrl2Size360">
-						<input type="text" class="form-control" id="smartUrl2Size360Id" name="smartUrl2Size360" value=" ${status.value }" maxlength="200">
-					</spring:bind></td>
-			</tr>
-			<tr>
-				<td><label class="control-label"></label></td>
-				<td><div class="col-xs-3" id="smartUrl2Size240Error"></div></td>
-				<td></td>
-				<td><div class="col-xs-3" id="smartUrl2Size360Error"></div></td>
-			</tr>
-			<tr>
-				<td><label for="smartUrl2Size480" class="control-label">Smart Url2 Size480</label></td>
-				<td><spring:bind path="content.smartUrl2Size480">
-						<input type="text" class="form-control" id="smartUrl2Size480Id" name="smartUrl2Size480" value="${status.value }" maxlength="200">
-					</spring:bind></td>
-				<td><label for="smartUrl2Size720" class="control-label">Smart Url2 Size720</label></td>
-				<td><spring:bind path="content.smartUrl2Size720">
-						<input type="text" class="form-control" id="smartUrl2Size720Id" name="smartUrl2Size720" value="${status.value }" maxlength="200">
-					</spring:bind></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td><div class="col-xs-3" id="smartUrl2Size480Error"></div></td>
-				<td></td>
-				<td><div class="col-xs-3" id="smartUrl2Size720Error"></div></td>
-			</tr>
+			<c:if test="${content.categoryId == 1 || content.categoryId == 2 || content.categoryId == 14 }">
+				<tr>
+					<td><label for="smartUrl1" class="control-label">Smart Url1</label></td>
+					<td><spring:bind path="content.smartUrl1">
+							<input type="text" class="form-control" id="smartUrl1Id" name="smartUrl1" value="${status.value }" maxlength="200">
+						</spring:bind></td>
+					<td><label for="smartUrl2" class="control-label">Smart Url2</label></td>
+					<td><spring:bind path="content.smartUrl2">
+							<input type="text" class="form-control" id="smartUrl2Id" name="smartUrl2" value="${status.value }" maxlength="200">
+						</spring:bind></td>
+				</tr>
+				<tr>
+					<td><label class="control-label"></label></td>
+					<td id="smartUrl1Error"></td>
+					<td><label class="control-label"></label></td>
+					<td id="smartUrl2Error"></td>
+				</tr>
+				<tr>
+					<td><label for="smartUrl3" class="control-label">Smart Url3</label></td>
+					<td><spring:bind path="content.smartUrl3">
+							<input type="text" class="form-control" id="smartUrl3Id" name="smartUrl3" value="${status.value }" maxlength="200">
+						</spring:bind></td>
+					<td><label for="fileSize240" class="control-label">File Size240</label></td>
+					<td><spring:bind path="content.fileSize240">
+							<input type="text" class="form-control" id="fileSize240Id" name="fileSize240" value="${status.value }">
+						</spring:bind></td>
+				</tr>
+				<tr>
+					<td><label class="control-label"></label></td>
+					<td id="smartUrl3Error"></td>
+					<td><label class="control-label"></label></td>
+					<td id="fileSize240Error"></td>
+				</tr>
+				<tr>
+					<td><label for="fileSize360" class="control-label">File Size360</label></td>
+					<td><spring:bind path="content.fileSize360">
+							<input type="text" class="form-control" id="fileSize360Id" name="fileSize360" value="${status.value }">
+						</spring:bind></td>
+					<td><label for="fileSize480" class="control-label">File Size480</label></td>
+					<td><spring:bind path="content.fileSize480">
+							<input type="text" class="form-control" id="fileSize480Id" name="fileSize480" value="${status.value }">
+						</spring:bind></td>
+				</tr>
+				<tr>
+					<td><label class="control-label"></label></td>
+					<td id="fileSize360Error"></td>
+					<td><label class="control-label"></label></td>
+					<td id="fileSize480Error"></td>
+				</tr>
+				<tr>
+					<td><label for="smartUrl2Size240" class="control-label">Smart Url2 Size240</label></td>
+					<td><spring:bind path="content.smartUrl2Size240">
+							<input type="text" class="form-control" id="smartUrl2Size240Id" name="smartUrl2Size240" value="${status.value }" maxlength="200">
+						</spring:bind></td>
+					<td><label for="smartUrl2Size360" class="control-label">Smart Url2 Size360</label></td>
+					<td><spring:bind path="content.smartUrl2Size360">
+							<input type="text" class="form-control" id="smartUrl2Size360Id" name="smartUrl2Size360" value=" ${status.value }" maxlength="200">
+						</spring:bind></td>
+				</tr>
+				<tr>
+					<td><label class="control-label"></label></td>
+					<td id="smartUrl2Size240Error"></td>
+					<td></td>
+					<td id="smartUrl2Size360Error"></td>
+				</tr>
+				<tr>
+					<td><label for="smartUrl2Size480" class="control-label">Smart Url2 Size480</label></td>
+					<td><spring:bind path="content.smartUrl2Size480">
+							<input type="text" class="form-control" id="smartUrl2Size480Id" name="smartUrl2Size480" value="${status.value }" maxlength="200">
+						</spring:bind></td>
+					<td><label for="smartUrl2Size720" class="control-label">Smart Url2 Size720</label></td>
+					<td><spring:bind path="content.smartUrl2Size720">
+							<input type="text" class="form-control" id="smartUrl2Size720Id" name="smartUrl2Size720" value="${status.value }" maxlength="200">
+						</spring:bind></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td id="smartUrl2Size480Error"></td>
+					<td></td>
+					<td id="smartUrl2Size720Error"></td>
+				</tr>
+			</c:if>
 			<tr>
 				<td colspan="4"><div class="col-xs-offset-6 col-xs-10">
 						<button type="button" class="btn btn-primary" id="updateContentButton">Update</button>

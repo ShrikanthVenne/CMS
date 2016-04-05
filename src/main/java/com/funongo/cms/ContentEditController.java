@@ -1,3 +1,4 @@
+
 package com.funongo.cms;
 
 import java.text.SimpleDateFormat;
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -49,8 +49,8 @@ public class ContentEditController {
 	}
 
 	@RequestMapping(value = "/getContents", method = RequestMethod.POST)
-	public String getContents(Model model, @ModelAttribute CategoryBO category, @RequestParam("search") String search,
-			@RequestParam("fromUpload") String fromDate, @RequestParam("toUpload") String toDate) {
+	public String getContents(Model model, @ModelAttribute CategoryBO category, @RequestParam("search") String search, @RequestParam("fromUpload") String fromDate,
+			@RequestParam("toUpload") String toDate) {
 		List<Content> contentList = contentService.getContentList(category, search, fromDate, toDate);
 		ContentWrapper wrapper = new ContentWrapper();
 		wrapper.setContents(contentList);
@@ -61,7 +61,9 @@ public class ContentEditController {
 		model.addAttribute("genres", genreList);
 		model.addAttribute("languages", languages);
 		model.addAttribute("wrapper", wrapper);
-		model.addAttribute("content", new Content());
+		Content content = new Content();
+		content.setCategoryId(category.getCategory_id());
+		model.addAttribute("content", content);
 		return "contentlist";
 	}
 

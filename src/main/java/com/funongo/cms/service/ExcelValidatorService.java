@@ -24,7 +24,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 import com.funongo.cms.bo.Content;
-import com.sun.istack.internal.logging.Logger;
 
 @Service
 public class ExcelValidatorService {
@@ -39,12 +38,11 @@ public class ExcelValidatorService {
 	@Autowired
 	@Qualifier("portalDB")
 	JdbcTemplate template;
-	
+
 	@Autowired
 	ContentService contentService;
 
-	public HashMap<String, ArrayList<String>> validateContent(Map<String, String> rowMap, HashSet<Integer> categories,
-			HashSet<Integer> subCategories, HashSet<Integer> genres, HashSet<Integer> tps) {
+	public HashMap<String, ArrayList<String>> validateContent(Map<String, String> rowMap, HashSet<Integer> categories, HashSet<Integer> subCategories, HashSet<Integer> genres, HashSet<Integer> tps) {
 		int category = 0;
 		ArrayList<String> errors = new ArrayList<String>();
 		String dateFormat = "yyyy-MM-dd HH:mm:ss";
@@ -213,7 +211,7 @@ public class ExcelValidatorService {
 				} catch (NumberFormatException e) {
 					errors.add("FILE_SIZE should be a number");
 				}
-			} 
+			}
 
 			// validate content production date, It's mandatory for all
 			// categories
@@ -253,40 +251,38 @@ public class ExcelValidatorService {
 				}
 			} else {
 				errors.add("VALIDTO cannot be blank");
-			}						
-			
-			
-			// validate smart urls, It's mandatory for videos, movies and short films
+			}
+
+			// validate smart urls, It's mandatory for videos, movies and short
+			// films
 			String smartUrl1 = rowMap.get("SMARTURL1");
 			String smartUrl2 = rowMap.get("SMARTURL2");
 			String smartUrl3 = rowMap.get("SMARTURL3");
-			
-			if((category == new Integer(properties.getProperty("videosId")) || 
-				category == new Integer(properties.getProperty("moviesId")) || 
-				category == new Integer(properties.getProperty("shortFilmId")))
-					&& 
-				smartUrl1 == null && smartUrl2 == null && smartUrl3 == null){
+
+			if ((category == new Integer(properties.getProperty("videosId")) || category == new Integer(properties.getProperty("moviesId"))
+					|| category == new Integer(properties.getProperty("shortFilmId"))) && smartUrl1 == null && smartUrl2 == null && smartUrl3 == null) {
 				errors.add("SmartUrl cannot be blank");
 			}
-			
-			
-			/*// Make a binary String for smartUrlProvider
-			String smartUrlProviderString = "";
-			
-			smartUrlProviderString = smartUrl3 == null ? (smartUrlProviderString + 0) : (smartUrlProviderString + 1);
-			
-			smartUrlProviderString = smartUrl2 == null ? (smartUrlProviderString + 0) : (smartUrlProviderString + 1);
-			
-			smartUrlProviderString = smartUrl1 == null ? (smartUrlProviderString + 0) : (smartUrlProviderString + 1);
-			
-			System.out.println("smartUrlProviderString "+smartUrlProviderString);
-			*/
-			// Convert String to Integer			
+
+			/*
+			 * // Make a binary String for smartUrlProvider =======
+			 * 
+			 * // Make a binary String for smartUrlProvider >>>>>>> stash String smartUrlProviderString = "";
+			 * 
+			 * smartUrlProviderString = smartUrl3 == null ? (smartUrlProviderString + 0) : (smartUrlProviderString + 1);
+			 * 
+			 * smartUrlProviderString = smartUrl2 == null ? (smartUrlProviderString + 0) : (smartUrlProviderString + 1);
+			 * 
+			 * smartUrlProviderString = smartUrl1 == null ? (smartUrlProviderString + 0) : (smartUrlProviderString + 1); <<<<<<< HEAD
+			 * 
+			 * System.out.println("smartUrlProviderString "+smartUrlProviderString);
+			 */
+			// Convert String to Integer
 			int smartUrlProvider = contentService.getSmartUrlProvider(smartUrl1, smartUrl2, smartUrl3);
-			System.out.println("provider "+smartUrlProvider);
+			System.out.println("provider " + smartUrlProvider);
+
 			// Since SmartUrlProvide is not part of excel, add to the map
-			rowMap.put("SMARTURLPROVIDER", smartUrlProvider+"");
-			
+			rowMap.put("SMARTURLPROVIDER", smartUrlProvider + "");
 
 			// validate directors, It's mandatory for movies
 			if (rowMap.get("DIRECTORS") != null) {
@@ -536,8 +532,7 @@ public class ExcelValidatorService {
 				} catch (NumberFormatException e) {
 					errors.add("DURATION should be a number");
 				}
-			} else if (category == new Integer(properties.getProperty("moviesId"))
-					|| category == new Integer(properties.getProperty("videosId"))) {
+			} else if (category == new Integer(properties.getProperty("moviesId")) || category == new Integer(properties.getProperty("videosId"))) {
 				errors.add("DURATION cannot be blank");
 			}
 
@@ -669,7 +664,7 @@ public class ExcelValidatorService {
 					errors.add("REVIEW cannot be greater than 300 characters");
 				}
 			}
-			
+
 			// validate SMARTURL2SIZE480, It's mandatory for Touchfone/smarturl2
 			if (rowMap.get("SMARTURL2SIZE480") != null) {
 				String smartUrlSize = rowMap.get("SMARTURL2SIZE480");
@@ -677,11 +672,10 @@ public class ExcelValidatorService {
 				if (smartUrlSize.length() > 202) {
 					errors.add("SMARTURL2SIZE480 cannot be greater than 300 characters");
 				}
-			}
-			else if(smartUrl2 != null){
+			} else if (smartUrl2 != null) {
 				errors.add("SMARTURL2SIZE480 cannot be blank");
 			}
-			
+
 			// validate SMARTURL2SIZE360, It's mandatory for Touchfone/smarturl2
 			if (rowMap.get("SMARTURL2SIZE360") != null) {
 				String smartUrlSize = rowMap.get("SMARTURL2SIZE360");
@@ -689,12 +683,10 @@ public class ExcelValidatorService {
 				if (smartUrlSize.length() > 202) {
 					errors.add("SMARTURL2SIZE360 cannot be greater than 300 characters");
 				}
-			}
-			else if(smartUrl2 != null){
+			} else if (smartUrl2 != null) {
 				errors.add("SMARTURL2SIZE360 cannot be blank");
 			}
-			
-			
+
 			// validate SMARTURL2SIZE240, It's mandatory for Touchfone/smarturl2
 			if (rowMap.get("SMARTURL2SIZE240") != null) {
 				String smartUrlSize = rowMap.get("SMARTURL2SIZE240");
@@ -702,12 +694,10 @@ public class ExcelValidatorService {
 				if (smartUrlSize.length() > 202) {
 					errors.add("SMARTURL2SIZE240 cannot be greater than 300 characters");
 				}
-			}
-			else if(smartUrl2 != null){
+			} else if (smartUrl2 != null) {
 				errors.add("SMARTURL2SIZE240 cannot be blank");
 			}
-			
-			
+
 			// validate SMARTURL2SIZE720, It's mandatory for Touchfone/smarturl2
 			if (rowMap.get("SMARTURL2SIZE720") != null) {
 				String smartUrlSize = rowMap.get("SMARTURL2SIZE720");
@@ -715,11 +705,10 @@ public class ExcelValidatorService {
 				if (smartUrlSize.length() > 202) {
 					errors.add("SMARTURL2SIZE720 cannot be greater than 300 characters");
 				}
-			}
-			else if(smartUrl2 != null){
+			} else if (smartUrl2 != null) {
 				errors.add("SMARTURL2SIZE720 cannot be blank");
 			}
-			
+
 			// validate FILESIZE480, It's mandatory for all categories
 			if (rowMap.get("FILESIZE480") != null) {
 				try {
@@ -727,11 +716,10 @@ public class ExcelValidatorService {
 				} catch (NumberFormatException e) {
 					errors.add("FILESIZE480 should be a number");
 				}
-			} 
-			else if(smartUrl2 != null) {
+			} else if (smartUrl2 != null) {
 				errors.add("FILESIZE480 cannot be blank");
 			}
-			
+
 			// validate FILESIZE360, It's mandatory for all categories
 			if (rowMap.get("FILESIZE360") != null) {
 				try {
@@ -739,11 +727,10 @@ public class ExcelValidatorService {
 				} catch (NumberFormatException e) {
 					errors.add("FILESIZE360 should be a number");
 				}
-			} 
-			else if(smartUrl2 != null) {
+			} else if (smartUrl2 != null) {
 				errors.add("FILESIZE360 cannot be blank");
 			}
-			
+
 			// validate FILESIZE240, It's mandatory for all categories
 			if (rowMap.get("FILESIZE240") != null) {
 				try {
@@ -751,11 +738,9 @@ public class ExcelValidatorService {
 				} catch (NumberFormatException e) {
 					errors.add("FILESIZE240 should be a number");
 				}
-			} 
-			else if(smartUrl2 != null) {
+			} else if (smartUrl2 != null) {
 				errors.add("FILESIZE240 cannot be blank");
 			}
-			
 
 		} else {
 			errors.add("CATEGORY_ID cannot be blank");

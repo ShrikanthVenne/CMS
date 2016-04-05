@@ -2,6 +2,7 @@
  * 
  */
 $(document).ready(function() {
+
 	$("#fromUploadedDateId").datepicker({
 		dateFormat : "dd-mm-yy",
 		Default : false,
@@ -49,4 +50,5 @@ $(document).ready(function() {
 		});
 
 	});
+>>>>>>> stash
 });
