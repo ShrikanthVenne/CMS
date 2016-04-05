@@ -374,8 +374,7 @@ public class ContentService {
 				contentProvider.setCompanyName(rs.getString("COMPANY_NAME"));
 				contentProvider.setAddress(rs.getString("ADDRESS"));
 				contentProvider.setContractStartDate(rs.getDate("CONTRACT_START_DATE"));
-				contentProvider.setContractEndDate(rs.getDate("CONTRACT_END_DATE"));
-				System.out.println(contentProvider.getContractStartDate());
+				contentProvider.setContractEndDate(rs.getDate("CONTRACT_END_DATE"));				
 				contentProviders.add(contentProvider);
 			}			
 		}
