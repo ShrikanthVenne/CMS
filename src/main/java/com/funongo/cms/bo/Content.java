@@ -64,6 +64,7 @@ public class Content {
 	private String smartUrl2Size360;
 	private String smartUrl2Size240;
 	private String smartUrl2Size720;
+	private int smartUrlProvider;
 
 	public int getContentId() {
 		return contentId;
@@ -551,6 +552,14 @@ public class Content {
 
 	public void setrDate(String rDate) {
 		this.rDate = rDate;
+	}
+
+	public int getSmartUrlProvider() {
+		return smartUrlProvider;
+	}
+
+	public void setSmartUrlProvider(int smartUrlProvider) {
+		this.smartUrlProvider = smartUrlProvider;
 	}
 
 }

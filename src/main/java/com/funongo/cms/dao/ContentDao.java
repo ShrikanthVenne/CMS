@@ -252,7 +252,7 @@ public class ContentDao {
 
 		if (content.getCategory().getCategory_id() == 1) {
 			sql = "UPDATE " + tableName
-					+ " SET DISPLAY_NAME =?, TP_ID = ?, GENRE_ID = ?, SUB_GENRE=?, LANGUAGE = ?, RATING = ?, SEARCH = ?, SHORT_DESCRIPTION = ?, LONG_DESCRIPTION = ?, FILE_SIZE = ?, SMARTURL1=?, SMARTURL2 = ?, DIRECTORS=?, PRODUCERS = ?, MUSIC_DIRECTORS = ?, ACTORS=?, ACTRESSES = ?, SINGERS=?, CHOREOGRAPHER = ?, SUPPORTING_STAR_CAST=?, LYRICIST = ?, REVIEW = ?, RELEASEDATE=?, PRODUCTION_COMPANIES=?, FILESIZE240 = ?, FILESIZE360 = ?, FILESIZE480=?, SMARTURL2SIZE240=?, SMARTURL2SIZE480=? ,SMARTURL2SIZE360=?, SMARTURL2SIZE720=?, SMARTURL3=? WHERE CONTENT_ID = ?";
+					+ " SET DISPLAY_NAME =?, TP_ID = ?, GENRE_ID = ?, SUB_GENRE=?, LANGUAGE = ?, RATING = ?, SEARCH = ?, SHORT_DESCRIPTION = ?, LONG_DESCRIPTION = ?, FILE_SIZE = ?, SMARTURL1=?, SMARTURL2 = ?, DIRECTORS=?, PRODUCERS = ?, MUSIC_DIRECTORS = ?, ACTORS=?, ACTRESSES = ?, SINGERS=?, CHOREOGRAPHER = ?, SUPPORTING_STAR_CAST=?, LYRICIST = ?, REVIEW = ?, RELEASEDATE=?, PRODUCTION_COMPANIES=?, FILESIZE240 = ?, FILESIZE360 = ?, FILESIZE480=?, SMARTURL2SIZE240=?, SMARTURL2SIZE480=? ,SMARTURL2SIZE360=?, SMARTURL2SIZE720=?, SMARTURL3=?, SMARTURLPROVIDER = ? WHERE CONTENT_ID = ?";
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 			java.util.Date date = null;
 			try {
@@ -261,27 +261,20 @@ public class ContentDao {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			Object[] param = { content.getDisplayName(), content.getTp().getTpId(), content.getGenre().getGenreId(),
-					content.getSubGenre(), content.getLanguage(), content.getRating(), content.getSearch(),
-					content.getShortDescription(), content.getLongDescription(), content.getFileSize(),
-					content.getSmartUrl1(), content.getSmartUrl2(), content.getDirectors(), content.getProducers(),
-					content.getMusicDirectors(), content.getActors(), content.getActresses(), content.getSingers(),
-					content.getChoreographer(), content.getSupportingStarCast(), content.getLyricist(),
-					content.getReview(), new Date(date.getTime()), content.getProductionCompanies(),
-					content.getFileSize240(), content.getFileSize360(), content.getFileSize480(),
-					content.getSmartUrl2Size240(), content.getSmartUrl2Size360(), content.getSmartUrl2Size480(),
-					content.getSmartUrl2Size720(), content.getSmartUrl3(), content.getContentId() };
+			Object[] param = { content.getDisplayName(), content.getTp().getTpId(), content.getGenre().getGenreId(), content.getSubGenre(), content.getLanguage(), content.getRating(),
+					content.getSearch(), content.getShortDescription(), content.getLongDescription(), content.getFileSize(), content.getSmartUrl1(), content.getSmartUrl2(), content.getDirectors(),
+					content.getProducers(), content.getMusicDirectors(), content.getActors(), content.getActresses(), content.getSingers(), content.getChoreographer(), content.getSupportingStarCast(),
+					content.getLyricist(), content.getReview(), new Date(date.getTime()), content.getProductionCompanies(), content.getFileSize240(), content.getFileSize360(),
+					content.getFileSize480(), content.getSmartUrl2Size240(), content.getSmartUrl2Size360(), content.getSmartUrl2Size480(), content.getSmartUrl2Size720(), content.getSmartUrl3(),
+					content.getSmartUrlProvider(), content.getContentId() };
 			template.update(sql, param);
 		} else {
 			sql = "UPDATE " + tableName
-					+ " SET DISPLAY_NAME =?, TP_ID = ?, GENRE_ID = ?, SUB_GENRE=?, LANGUAGE = ?, RATING = ?, SEARCH = ?, SHORT_DESCRIPTION = ?, LONG_DESCRIPTION = ?, FILE_SIZE = ?, SMARTURL1=?, SMARTURL2 = ?, FILESIZE240 = ?, FILESIZE360 = ?, FILESIZE480=?, SMARTURL2SIZE240=?, SMARTURL2SIZE480=? ,SMARTURL2SIZE360=?, SMARTURL2SIZE720=?, SMARTURL3=? WHERE CONTENT_ID = ?";
-			Object[] param = { content.getDisplayName(), content.getTp().getTpId(), content.getGenre().getGenreId(),
-					content.getSubGenre(), content.getLanguage(), content.getRating(), content.getSearch(),
-					content.getShortDescription(), content.getLongDescription(), content.getFileSize(),
-					content.getSmartUrl1(), content.getSmartUrl2(), content.getFileSize240(), content.getFileSize360(),
-					content.getFileSize480(), content.getSmartUrl2Size240(), content.getSmartUrl2Size360(),
-					content.getSmartUrl2Size480(), content.getSmartUrl2Size720(), content.getSmartUrl3(),
-					content.getContentId() };
+					+ " SET DISPLAY_NAME =?, TP_ID = ?, GENRE_ID = ?, SUB_GENRE=?, LANGUAGE = ?, RATING = ?, SEARCH = ?, SHORT_DESCRIPTION = ?, LONG_DESCRIPTION = ?, FILE_SIZE = ?, SMARTURL1=?, SMARTURL2 = ?, FILESIZE240 = ?, FILESIZE360 = ?, FILESIZE480=?, SMARTURL2SIZE240=?, SMARTURL2SIZE480=? ,SMARTURL2SIZE360=?, SMARTURL2SIZE720=?, SMARTURL3=?, SMARTURLPROVIDER = ? WHERE CONTENT_ID = ?";
+			Object[] param = { content.getDisplayName(), content.getTp().getTpId(), content.getGenre().getGenreId(), content.getSubGenre(), content.getLanguage(), content.getRating(),
+					content.getSearch(), content.getShortDescription(), content.getLongDescription(), content.getFileSize(), content.getSmartUrl1(), content.getSmartUrl2(), content.getFileSize240(),
+					content.getFileSize360(), content.getFileSize480(), content.getSmartUrl2Size240(), content.getSmartUrl2Size360(), content.getSmartUrl2Size480(), content.getSmartUrl2Size720(),
+					content.getSmartUrl3(), content.getSmartUrlProvider(), content.getContentId() };
 			template.update(sql, param);
 
 		}
