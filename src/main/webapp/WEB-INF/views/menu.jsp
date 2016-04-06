@@ -35,7 +35,7 @@
 						<li><a href="bulkUpload">Bulk Upload</a></li>
 						<li><a href="bulkLangUpload">Bulk Language Upload</a></li>
 						<li><a href="#">Single Upload</a></li>
-						<li><a href="editContent">Edit content</a></li>
+<!-- 						<li><a href="editContent">Edit content</a></li> -->
 					</ul>
 			     </li>
 			     <li id="masters" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Masters<span

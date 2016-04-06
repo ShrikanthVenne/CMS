@@ -14,23 +14,23 @@
 		<table class="table table-bordered table-condensed">
 			<thead>
 				<tr>
-					<th class="col-md-1">CP_ID</th>
-					<th class="col-md-2">CP_NAME</th>
-					<th class="col-md-1">COMPANY_NAME</th>
-					<th class="col-md-2">ADDRESS</th>
-					<th class="col-md-1">CONTRACT_START_DATE</th>
-					<th class="col-md-2">CONTRACT_END_DATE</th>
+					<th class="text-center">ID</th>
+					<th class="text-center">NAME</th>
+					<th class="text-center">COMPANY</th>
+					<th class="text-center">ADDRESS</th>
+					<th class="text-center">CONTRACT START DATE</th>
+					<th class="text-center">CONTRACT END DATE</th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach items="${cps}" var="cp">
 					<tr>
-						<td>${cp.id}</td>
-						<td>${cp.name}</td>
-						<td>${cp.companyName}</td>
-						<td>${cp.address}</td>
-						<td><fmt:formatDate pattern="dd/MM/yyyy" value="${cp.contractStartDate}" /></td>
-						<td><fmt:formatDate pattern="dd/MM/yyyy" value="${cp.contractEndDate}" /></td>
+						<td class="text-center">${cp.id}</td>
+						<td class="text-center">${cp.name}</td>
+						<td class="text-center">${cp.companyName}</td>
+						<td class="text-center">${cp.address}</td>
+						<td class="text-center"><fmt:formatDate pattern="dd/MM/yyyy" value="${cp.contractStartDate}" /></td>
+						<td class="text-center"><fmt:formatDate pattern="dd/MM/yyyy" value="${cp.contractEndDate}" /></td>
 					</tr>
 				</c:forEach>
 			</tbody>		

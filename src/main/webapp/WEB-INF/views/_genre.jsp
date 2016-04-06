@@ -8,17 +8,17 @@
 		<table id="genreTable" class="table table-bordered">
 			<thead>
 				<tr>
-					<th>GENRE_ID</th>
-					<th>GENRE_NAME</th>
-					<th>CATEGORY_NAME</th>
+					<th class="text-center">ID</th>
+					<th class="text-center">NAME</th>
+					<th class="text-center">CATEGORY</th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach items="${genres}" var="genre">
 					<tr>
-						<td>${genre.genreId}</td>
-						<td>${genre.genreName}</td>
-						<td>${genre.category.category_name}</td>
+						<td class="text-center">${genre.genreId}</td>
+						<td class="text-center">${genre.genreName}</td>
+						<td class="text-center">${genre.category.category_name}</td>
 					</tr>
 				</c:forEach>
 			</tbody>

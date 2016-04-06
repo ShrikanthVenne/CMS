@@ -13,15 +13,15 @@
 		<table class="table table-bordered table-nonfluid">
 			<thead>
 				<tr>
-					<th class="col-md-1">ID</th>
-					<th class="col-md-2">NAME</th>
+					<th class="col-md-1 text-center" >ID</th>
+					<th class="col-md-2 text-center">NAME</th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach items="${categories}" var="category">
 					<tr>
-						<td>${category.category_id}</td>
-						<td>${category.category_name}</td>
+						<td class="text-center">${category.category_id}</td>
+						<td class="text-center">${category.category_name}</td>
 					</tr>
 				</c:forEach>
 			</tbody>		

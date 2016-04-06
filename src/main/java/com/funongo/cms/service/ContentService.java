@@ -224,14 +224,10 @@ public class ContentService {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		try{
-			System.out.println("before con "+(new Date()));
-			con = dataSource.getConnection();
-			System.out.println("after con "+(new Date()));
-			ps = con.prepareStatement(query);
-			System.out.println("before execute "+(new Date()));
-			rs = ps.executeQuery();
-			System.out.println("after execute "+(new Date()));
+		try{			
+			con = dataSource.getConnection();			
+			ps = con.prepareStatement(query);			
+			rs = ps.executeQuery();			
 			while(rs.next()){
 				CategoryBO category = new CategoryBO();
 				category.setCategory_id(rs.getInt("CATEGORY_ID"));

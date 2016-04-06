@@ -8,12 +8,11 @@
 		
 		 $("#categories").multiselect('selectAll', false);
 		 $("#categories").multiselect('updateButtonText');
+		 getGenres();
 		
 	});	
 
-	function getGenres(){
-		
-		
+	function getGenres(){				
 		if($('#categories').val() != null){
 			$('#categoryLabel').hide();
 			 $.ajax({

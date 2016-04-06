@@ -10,6 +10,9 @@
 <script type="text/javascript">
 	var contextPath = "${pageContext.request.contextPath}";
 </script>
+<style>
+	 
+</style>
 </head>
 <body>
 	<div class="container">
@@ -18,22 +21,20 @@
 		
 		<form action="" class="form-inline" id="catForm">
 			<div class="form-group">
-	        	<label >Categories:</label>  
-	        	<span>
-		        	<select id="categories" name="categories" multiple="multiple" >
-						<c:forEach items="${categories}" var="category">
-							<option value="${category.category_id}">${category.category_name}</option>				
-						</c:forEach>
-					</select>
+	        	<label >Categories:</label>  	        	
+	        	<select id="categories" name="categories" multiple="multiple" >
+					<c:forEach items="${categories}" var="category">
+						<option value="${category.category_id}">${category.category_name}</option>				
+					</c:forEach>
+				</select>							
+				<span>
 					<label id="categoryLabel" style="display: none; color:red">Category is required</label>
-				</span> 	        	   	       												
-			</div>
-			<br/><br/>
-			<div>
+				</span>								
 				<button type="button" class="btn btn-default btn-sm" onclick="getGenres()">
 		          <span class="glyphicon glyphicon-list"></span> List Genres
-		        </button>	
-			</div>															  									
+		        </button>					        	   	       											
+			</div>
+			<br/><br/>																	  								
 		</form>        	
 	    
 	    <br/><br/>

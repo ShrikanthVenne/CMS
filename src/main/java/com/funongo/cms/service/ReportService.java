@@ -127,7 +127,7 @@ public class ReportService {
 			message += "<br/><br/>";
 			message += "<b>Summary of Metadata in Different Languages on Chillx :<b><br/><br/>";
 
-			System.out.println(message);
+			//System.out.println(message);
 
 			rs.close();
 			ps.close();
