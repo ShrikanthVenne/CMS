@@ -79,6 +79,6 @@ public class ContentEditController {
 		System.out.println(content.getContentId());
 		contentService.updateContent(content);
 		model.addAttribute("content", content);
-		return "content";
+		return "contentlist";
 	}
 }

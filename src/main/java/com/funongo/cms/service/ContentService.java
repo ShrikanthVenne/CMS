@@ -131,9 +131,8 @@ public class ContentService {
 
 	public ArrayList<ContentBO> getCurrentlyUpdatedContent(Integer maxId, Integer count) {
 		String contentTable = properties.getProperty("contentTable");
-		String query = "select top " + count + " content_id, content_name, b.category_name " + " from " + contentTable
-				+ " a " + " inner join ATOM_CATEGORY b" + " on a. CATEGORY_ID = B.CATEGORY_ID" + " where content_id > "
-				+ maxId;
+		String query = "select top " + count + " content_id, content_name, b.category_name " + " from " + contentTable + " a " + " inner join ATOM_CATEGORY b" + " on a. CATEGORY_ID = B.CATEGORY_ID"
+				+ " where content_id > " + maxId;
 		System.out.println(query);
 		ArrayList<ContentBO> contentList = new ArrayList<ContentBO>();
 		Connection con = null;
@@ -184,13 +183,14 @@ public class ContentService {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		try {System.out.println("before con "+(new Date()));
+		try {
+			System.out.println("before con " + (new Date()));
 			con = dataSource.getConnection();
-			System.out.println("after con "+(new Date()));
+			System.out.println("after con " + (new Date()));
 			ps = con.prepareStatement(query);
-			System.out.println("before execute "+(new Date()));
+			System.out.println("before execute " + (new Date()));
 			rs = ps.executeQuery();
-			System.out.println("after execute "+(new Date()));
+			System.out.println("after execute " + (new Date()));
 			while (rs.next()) {
 				tpIds.add(rs.getInt(1));
 			}
@@ -216,43 +216,53 @@ public class ContentService {
 		}
 		return tpIds;
 	}
-	
-	public ArrayList<CategoryBO> getAllCategories(){
+
+	public ArrayList<CategoryBO> getAllCategories() {
 		ArrayList<CategoryBO> categories = new ArrayList<CategoryBO>();
 		LOGGER.setLevel(Level.INFO);
 		String query = "Select CATEGORY_ID, CATEGORY_NAME from ATOM_CATEGORY";
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+<<<<<<< HEAD
 		try{			
 			con = dataSource.getConnection();			
 			ps = con.prepareStatement(query);			
 			rs = ps.executeQuery();			
 			while(rs.next()){
+=======
+		try {
+			System.out.println("before con " + (new Date()));
+			con = dataSource.getConnection();
+			System.out.println("after con " + (new Date()));
+			ps = con.prepareStatement(query);
+			System.out.println("before execute " + (new Date()));
+			rs = ps.executeQuery();
+			System.out.println("after execute " + (new Date()));
+			while (rs.next()) {
+>>>>>>> origin/master
 				CategoryBO category = new CategoryBO();
 				category.setCategory_id(rs.getInt("CATEGORY_ID"));
 				category.setCategory_name(rs.getString("CATEGORY_NAME"));
 				categories.add(category);
-			}			
-		}
-		catch(Exception e){
+			}
+		} catch (Exception e) {
 			LOGGER.info(e.getMessage());
-		}
-		finally{
+		} finally {
 			try {
-				if(rs != null){				
-					rs.close();													
+				if (rs != null) {
+					rs.close();
 				}
-				if(ps != null){
-					ps.close();					
+				if (ps != null) {
+					ps.close();
 				}
-				if(con != null){
+				if (con != null) {
 					con.close();
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				LOGGER.setLevel(Level.INFO);
-			    LOGGER.info(e.getMessage());				
+				LOGGER.info(e.getMessage());
 			}
 		}
 		return categories;
@@ -285,113 +295,108 @@ public class ContentService {
 	}
 
 	public void updateContent(Content content) {
+		content.setSmartUrlProvider(getSmartUrlProvider(content.getSmartUrl1(), content.getSmartUrl2(), content.getSmartUrl3()));
 		contentDao.updateContent(content);
 
 	}
-	
-	public ArrayList<Genre> getGenresFromCategories(String categories){
+
+	public ArrayList<Genre> getGenresFromCategories(String categories) {
 		ArrayList<Genre> genres = new ArrayList<Genre>();
-		String query = "Select a.GENRE_ID, a.GENRE_NAME, b.CATEGORY_NAME from ATOM_GENRE a"
-				+ " inner join ATOM_CATEGORY b"
-				+ " on a.CATEGORY_ID = b.CATEGORY_ID"
-				+ " where b.CATEGORY_ID IN ("+categories+")";
+		String query = "Select a.GENRE_ID, a.GENRE_NAME, b.CATEGORY_NAME from ATOM_GENRE a" + " inner join ATOM_CATEGORY b" + " on a.CATEGORY_ID = b.CATEGORY_ID" + " where b.CATEGORY_ID IN ("
+				+ categories + ")";
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		try{
+		try {
 			con = dataSource.getConnection();
 			ps = con.prepareStatement(query);
 			rs = ps.executeQuery();
-			while(rs.next()){
-				CategoryBO category = new CategoryBO();				
+			while (rs.next()) {
+				CategoryBO category = new CategoryBO();
 				category.setCategory_name(rs.getString("CATEGORY_NAME"));
 				Genre genre = new Genre();
 				genre.setGenreId(rs.getInt("GENRE_ID"));
 				genre.setGenreName(rs.getString("GENRE_NAME"));
 				genre.setCategory(category);
 				genres.add(genre);
-			}			
-		}
-		catch(Exception e){
+			}
+		} catch (Exception e) {
 			LOGGER.info(e.getMessage());
-		}
-		finally{
+		} finally {
 			try {
-				if(rs != null){				
-					rs.close();													
+				if (rs != null) {
+					rs.close();
 				}
-				if(ps != null){
-					ps.close();					
+				if (ps != null) {
+					ps.close();
 				}
-				if(con != null){
+				if (con != null) {
 					con.close();
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				LOGGER.setLevel(Level.INFO);
-			    LOGGER.info(e.getMessage());				
+				LOGGER.info(e.getMessage());
 			}
 		}
 		return genres;
 	}
-	
-	public int getSmartUrlProvider(String smartUrl1, String smartUrl2, String smartUrl3){
+
+	public int getSmartUrlProvider(String smartUrl1, String smartUrl2, String smartUrl3) {
 		// Make a binary String for smartUrlProvider
 		String smartUrlProviderString = "";
-		
-		smartUrlProviderString = smartUrl3 == null ? (smartUrlProviderString + 0) : (smartUrlProviderString + 1);
-		
-		smartUrlProviderString = smartUrl2 == null ? (smartUrlProviderString + 0) : (smartUrlProviderString + 1);
-		
-		smartUrlProviderString = smartUrl1 == null ? (smartUrlProviderString + 0) : (smartUrlProviderString + 1);
-		
-		System.out.println("smartUrlProviderString "+smartUrlProviderString);
-		
-		// Convert String to Integer			
+
+		smartUrlProviderString = ((smartUrl3 == null || smartUrl3 == "") ? (smartUrlProviderString + 0) : (smartUrlProviderString + 1));
+
+		smartUrlProviderString = ((smartUrl2 == null || smartUrl2 == "") ? (smartUrlProviderString + 0) : (smartUrlProviderString + 1));
+
+		smartUrlProviderString = ((smartUrl1 == null || smartUrl1 == "") ? (smartUrlProviderString + 0) : (smartUrlProviderString + 1));
+
+		System.out.println("smartUrlProviderString " + smartUrlProviderString);
+
+		// Convert String to Integer
 		int smartUrlProvider = Integer.parseInt(smartUrlProviderString, 2);
 		return smartUrlProvider;
 	}
-	
-	public ArrayList<ContentProvider> getAllContentProviders(){
+
+	public ArrayList<ContentProvider> getAllContentProviders() {
 		ArrayList<ContentProvider> contentProviders = new ArrayList<ContentProvider>();
 		LOGGER.setLevel(Level.INFO);
 		String query = "Select TP_ID, TP_NAME, COMPANY_NAME, ADDRESS, CONTRACT_START_DATE, CONTRACT_END_DATE from ATOM_TP";
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		try{			
-			con = dataSource.getConnection();			
-			ps = con.prepareStatement(query);			
-			rs = ps.executeQuery();			
-			while(rs.next()){
+		try {
+			con = dataSource.getConnection();
+			ps = con.prepareStatement(query);
+			rs = ps.executeQuery();
+			while (rs.next()) {
 				ContentProvider contentProvider = new ContentProvider();
 				contentProvider.setId(rs.getLong("TP_ID"));
 				contentProvider.setName(rs.getString("TP_NAME"));
 				contentProvider.setCompanyName(rs.getString("COMPANY_NAME"));
 				contentProvider.setAddress(rs.getString("ADDRESS"));
 				contentProvider.setContractStartDate(rs.getDate("CONTRACT_START_DATE"));
-				contentProvider.setContractEndDate(rs.getDate("CONTRACT_END_DATE"));				
+				contentProvider.setContractEndDate(rs.getDate("CONTRACT_END_DATE"));
 				contentProviders.add(contentProvider);
-			}			
-		}
-		catch(Exception e){
+			}
+		} catch (Exception e) {
 			LOGGER.info(e.getMessage());
-		}
-		finally{
+		} finally {
 			try {
-				if(rs != null){				
-					rs.close();													
+				if (rs != null) {
+					rs.close();
 				}
-				if(ps != null){
-					ps.close();					
+				if (ps != null) {
+					ps.close();
 				}
-				if(con != null){
+				if (con != null) {
 					con.close();
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				LOGGER.setLevel(Level.INFO);
-			    LOGGER.info(e.getMessage());				
+				LOGGER.info(e.getMessage());
 			}
 		}
 		return contentProviders;
